@@ -6,21 +6,91 @@
     </head>
     <body>
         <script src="js/lib/three.min.js"></script>
+        <script src="js/lib/OBJLoader.js"></script>
         <script>
             var scene = new THREE.Scene();
-            var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 2000);
 
-            var renderer = new THREE.WebGLRenderer();
+            var renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setClearColor( 0x000000, 0 );
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
             var geometry = new THREE.CubeGeometry(1,1,1);
             var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
             var cube = new THREE.Mesh(geometry, material);
-            scene.add(cube);
+            //scene.add(cube);
 
-            camera.position.z = 5;
+            camera.position.x = 2;
+            camera.position.y = 1;
+            camera.position.z = 6;
+            
+            var ambient = new THREE.AmbientLight( 0x101030 );
+            scene.add( ambient );
 
+            var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+            directionalLight.position.set( 2, 0, 1 );
+            scene.add( directionalLight );
+
+            var manager = new THREE.LoadingManager();
+            manager.onProgress = function ( item, loaded, total ) {
+
+                console.log( item, loaded, total );
+
+            };
+
+            var texture = new THREE.Texture();
+
+            var loader = new THREE.ImageLoader(manager);
+            loader.load('models/UV_Grid_Sm.jpg', function(image){
+
+                texture.image = image;
+                texture.needsUpdate = true;
+
+            });
+
+            var loader = new THREE.OBJLoader(manager);
+            loader.load( 'models/FoosballPlayer_new.obj', function(object){
+
+                object.traverse( function ( child ) {
+
+                    if (child instanceof THREE.Mesh ) {
+
+                        child.material.map = texture;
+
+                    }
+
+                } );
+
+                object.position.x = 0;
+                object.position.y = 0;
+                object.position.z = 0;
+
+                scene.add( object );
+
+            });
+           
+            var loader = new THREE.OBJLoader(manager);
+            loader.load( 'models/FoosballPlayer_new.obj', function(object){
+
+                object.traverse( function ( child ) {
+
+                    if (child instanceof THREE.Mesh ) {
+
+                        child.material.map = texture;
+
+                    }
+
+                } );
+
+                object.position.x = 4;
+                object.position.y = 0;
+                object.position.z = 0;
+
+                scene.add( object );
+
+            });
+            
             var render = function () {
                 requestAnimationFrame(render);
 
