@@ -61,6 +61,13 @@ class Helpers {
 		self::$dbh = null;
 	}
 
+	static function getCountryId($country_name){
+		include_once('store.php');
+		
+		return (isset($countries[$country_name]) == true) ? $countries[$country_name] : '-1';
+		
+	}
+
 }
 
 
