@@ -11,8 +11,16 @@
   <body>
     <div id="container"></div>
     <script src="http://www.html5canvastutorials.com/libraries/three.min.js"></script>
+        <script src="js/lib/Detector.js"></script>
+        <script src="js/lib/Three.js"></script>
+        <script src="js/lib/Stats.js"></script>
+        <script src="js/lib/OrbitControls.js"></script>
+        <script src="js/lib/KeyboardState.js"></script>
+        <script src="js/lib/THREEx.FullScreen.js"></script>
+        <script src="js/lib/THREEx.WindowResize.js"></script>
     <script defer="defer">
       // renderer
+      var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
       var renderer = new THREE.WebGLRenderer();
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
@@ -23,17 +31,64 @@
  
       // scene
       var scene = new THREE.Scene();
+      var clock = new THREE.Clock();
+
+      var keyboard = new KeyboardState();
                 
       // sphere
       // the first argument of THREE.SphereGeometry is the radius, the second argument is
       // the segmentsWidth, and the third argument is the segmentsHeight.  Increasing the 
       // segmentsWidth and segmentsHeight will yield a more perfect circle, but will degrade
       // rendering performance
-      var sphere = new THREE.Mesh(new THREE.SphereGeometry(150, 100, 100), new THREE.MeshNormalMaterial());
+      var sphere = new THREE.Mesh(new THREE.SphereGeometry(50, 100, 100), new THREE.MeshNormalMaterial());
       sphere.overdraw = true;
       scene.add(sphere);
+      animate();
+
+        function animate() {
+
+                requestAnimationFrame( animate );
+
+                render();
+                update();
+            
+
+            }
+
+            function update()
+{
+  keyboard.update();
+
+  var moveDistance = 50 * clock.getDelta(); 
+
+  if ( keyboard.down("left") ) 
+    sphere.translateX( -50 );
+
+  if ( keyboard.down("right") ) 
+    sphere.translateX(  50 );
+
+  if ( keyboard.pressed("A") )
+    sphere.translateX( -moveDistance );
+
+  if ( keyboard.pressed("D") )
+    sphere.translateX(  moveDistance );
+
+  if ( keyboard.down("R") )
+    sphere.material.color = new THREE.Color(0xff0000);
+  if ( keyboard.up("R") )
+    sphere.material.color = new THREE.Color(0x0000ff);
+
+
+}
+
+      function render(){
+        var timer = Date.now() * 0.005;
+        sphere.position.x = 100 * Math.cos(timer);
+        sphere.position.y = 100 * Math.sin(timer);
+        renderer.render( scene, camera );
+      }
  
-      renderer.render(scene, camera);
+ 
     </script>
   </body> 
 </html>      

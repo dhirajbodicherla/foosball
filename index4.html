@@ -137,6 +137,9 @@ function update()
 
 function render() 
 {
+	var time = Date.now() * 0.00005;
+	mesh.rotation.y = time * 3;
+	mesh.rotation.x = time * 3;
 	renderer.render( scene, camera );
 }
 
