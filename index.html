@@ -107,9 +107,9 @@
             });
             
             var render = function () {
-                var time = Date.now() * 0.000001;
-                // sphere.position.y += time * 0.0001;
-                // sphere.position.x += time * 0.0001;
+                var timer = Date.now() * 0.005;
+                sphere.position.x = 1 * Math.cos(timer);
+                sphere.position.y = 1 * Math.sin(timer);
 
                 renderer.render(scene, camera);
             };
