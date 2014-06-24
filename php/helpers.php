@@ -35,6 +35,7 @@ class Helpers {
 		return self::$dbh;
 	}
 
+
 	/**
 	 * To execute sql query
 	 */
@@ -67,6 +68,8 @@ class Helpers {
 		return (isset($countries[$country_name]) == true) ? $countries[$country_name] : '-1';
 
 	}
+
+
 
 }
 

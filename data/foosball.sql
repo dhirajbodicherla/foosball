@@ -3,11 +3,10 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 23, 2014 at 10:09 PM
--- Server version: 5.5.25
--- PHP Version: 5.4.4
+-- Generation Time: Jun 24, 2014 at 11:36 PM
+-- Server version: 5.5.24-log
+-- PHP Version: 5.4.3
 
-SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -24,11 +23,28 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `leaderboard`
+--
+
+CREATE TABLE IF NOT EXISTS `leaderboard` (
+  `id_lbo` int(8) NOT NULL AUTO_INCREMENT,
+  `username_lbo` varchar(30) NOT NULL,
+  `score_lbo` int(3) NOT NULL,
+  `ip_lbo` varchar(20) NOT NULL,
+  `country_id_lbo` int(8) NOT NULL,
+  `timestamp_lbo` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id_pla_lbo` int(8) unsigned NOT NULL,
+  PRIMARY KEY (`id_lbo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `player`
 --
 
-CREATE TABLE `player` (
-  `id_pla` int(6) DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `player` (
+  `id_pla` int(6) unsigned DEFAULT NULL,
   `first_name_pla` varchar(16) DEFAULT NULL,
   `last_name_pla` varchar(20) DEFAULT NULL,
   `shirt_name_pla` varchar(18) DEFAULT NULL,
@@ -1210,7 +1226,6 @@ INSERT INTO `player` (`id_pla`, `first_name_pla`, `last_name_pla`, `shirt_name_p
 (194209, 'Youssef', 'El Arabi', 'El Arabi', 'ST', 'Granada CF', 'Morocco', 45, '26', '74', '80', '6'),
 (194359, 'Yuto', 'Nagatomo', 'Nagatomo', 'LM', 'Inter', 'Japan', 40, '26', '77', '80', '3'),
 (209100, 'Luis', 'Barrogios', 'Barrogios', 'ST', 'NG – FA', 'Paraguay', 49, '29', '80', '80', '0');
-SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -21,7 +21,7 @@ if( isset($country_name) && $country_id == -1 ){
 
 }
 
-$dbh = Helpers::dbConnect();
+$dbh = Helpers::dbConnectLeaderboard();
 
 $sql_get_player_info = "SELECT * 
 						FROM player 

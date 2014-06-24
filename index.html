@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Foosball</title>
+        <link rel="stylesheet" type="text/css" href="css/base.css">
+    </head>
+    <body>
+        <script src="js/lib/three.min.js"></script>
+        <script src="js/lib/OBJLoader.js"></script>
+        <script src="js/lib/Detector.js"></script>
+        <script src="js/lib/Three.js"></script>
+        <script src="js/lib/Stats.js"></script>
+        <script src="js/lib/OrbitControls.js"></script>
+        <script src="js/lib/KeyboardState.js"></script>
+        <script>
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 2000);
+            var left;
+            var right;
+
+            var renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setClearColor( 0x000000, 0 );
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+            var sphere = new THREE.Mesh(new THREE.SphereGeometry(0.2, 100, 100), new THREE.MeshNormalMaterial());
+            sphere.overdraw = true;
+            scene.add(sphere);
+        
+
+            var clock = new THREE.Clock();
+
+            var keyboard = new KeyboardState();
+            //scene.add(cube);
+
+            camera.position.x = 2;
+            camera.position.y = 1;
+            camera.position.z = 6;
+            
+            var ambient = new THREE.AmbientLight( 0x101030 );
+            scene.add( ambient );
+
+            var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+            directionalLight.position.set( 2, 0, 1 );
+            scene.add( directionalLight );
+
+            var manager = new THREE.LoadingManager();
+            manager.onProgress = function ( item, loaded, total ) {
+
+                console.log( item, loaded, total );
+
+            };
+
+            var texture = new THREE.Texture();
+
+            var loader = new THREE.ImageLoader(manager);
+            loader.load('models/UV_Grid_Sm.jpg', function(image){
+
+                texture.image = image;
+                texture.needsUpdate = true;
+
+            });
+
+            var loader = new THREE.OBJLoader(manager);
+            loader.load( 'models/FoosballPlayer_new.obj', function(object1){
+
+                object1.traverse( function ( child ) {
+
+                    if (child instanceof THREE.Mesh ) {
+
+                        child.material.map = texture;
+
+                    }
+
+                } );
+
+                object1.position.x = 0;
+                object1.position.y = 0;
+                object1.position.z = 0;
+
+                left = object1;
+
+                scene.add( object1 );
+
+            });
+           
+            var loader = new THREE.OBJLoader(manager);
+            loader.load( 'models/FoosballPlayer_new.obj', function(object2){
+
+                object2.traverse( function ( child ) {
+
+                    if (child instanceof THREE.Mesh ) {
+
+                        child.material.map = texture;
+
+                    }
+
+                } );
+
+                object2.position.x = 4;
+                object2.position.y = 0;
+                object2.position.z = 0;
+
+                right = object2;
+
+                scene.add( object2 );
+
+            });
+            
+            var render = function () {
+                var timer = Date.now() * 0.005;
+                sphere.position.x = 1 * Math.cos(timer);
+                sphere.position.y = 1 * Math.sin(timer);
+
+                renderer.render(scene, camera);
+            };
+
+            function update()
+            {
+              keyboard.update();
+
+              var moveDistance = 5 * clock.getDelta(); 
+
+              if ( keyboard.down("left") ) 
+                left.translateZ( -1 );
+
+              if ( keyboard.down("right") ) 
+          a5      left.translateZ(  1 );
+
+
+            }
+
+            function animate() 
+            {
+                requestAnimationFrame( animate );
+                render();       
+                update();
+            }
+
+    
+            animate();
+
+        </script>
+        <script src="js/script.js"></script>
+
+    </body>
+</html>
