@@ -1,7 +1,7 @@
 <?php
 
 class Helpers {
-	
+
 	private static $dbh = null;
 
 	static function checkParams($params, $REQ) {
@@ -63,9 +63,9 @@ class Helpers {
 
 	static function getCountryId($country_name){
 		include_once('store.php');
-		
+
 		return (isset($countries[$country_name]) == true) ? $countries[$country_name] : '-1';
-		
+
 	}
 
 }
