@@ -1,5 +1,25 @@
 (function(){
 
+    function Game(player){
+        this.canvasWidth = window.innerWidth
+        , this.canvasHeight = window.innerHeight
+        , this.aspectRatio = canvasWidth / canvasHeight
+        , this.viewSize = 1000
+        , this.leftStick
+        , this.rightStick
+        , this.football
+        , this.scene = new THREE.Scene()
+        , this.camera
+        , this.renderer = new THREE.WebGLRenderer({ alpha: true })
+        , this.clock = new THREE.Clock()
+        , this.keyboard = new KeyboardState()
+        , this.ambient = new THREE.AmbientLight( 0x101030 )
+        , this.directionalLight = new THREE.DirectionalLight( 0xffeedd )
+        , this.ground;
+
+        this.init = init;
+    }
+
     var canvasWidth = window.innerWidth
     , canvasHeight = window.innerHeight
     , aspectRatio = canvasWidth / canvasHeight
@@ -14,7 +34,8 @@
     , keyboard = new KeyboardState()
     , ambient = new THREE.AmbientLight( 0x101030 )
     , directionalLight = new THREE.DirectionalLight( 0xffeedd )
-    , ground;
+    , ground
+    , collidableMeshList = [];
 
     init();
 
@@ -24,7 +45,7 @@
         //camera = new THREE.OrthographicCamera( window.innerWidth / 2, window.innerHeight / 2, 70, 1, 1000, - 1000, 1000 );
         camera = new THREE.OrthographicCamera( -aspectRatio * viewSize / 2, aspectRatio * viewSize / 2, viewSize / 2, -viewSize / 2, -2000, 2000 );
 
-        camera.position.set(0, 100, 200);
+        camera.position.set(0, 200, 250);
         //camera.rotation.x = Math.PI / 2;
         camera.lookAt(new THREE.Vector3(0, 50, 0));
 
@@ -47,7 +68,7 @@
 
       
         // Grid
-        var size = 500, step = 50;
+        var size = 700, step = 100;
 
         var geometry = new THREE.Geometry();
 
@@ -98,11 +119,11 @@
 
             leftStick = model;
 
-            leftStick.position.set(-400, 0, 0);
-            leftStick.scale.set(100,100,100);
-            
+            leftStick.position.set(-800, 0, 0);
+            leftStick.scale.set(300,300,300);
             
             scene.add(leftStick);
+            collidableMeshList.push(leftStick);
 
         });
 
@@ -116,28 +137,60 @@
 
             rightStick = model;
 
-            rightStick.position.set(400, 0, 0);
-            rightStick.scale.set(100,100,100);
+            rightStick.position.set(800, 0, 0);
+            rightStick.scale.set(300,300,300);
 
             scene.add( rightStick );
+            collidableMeshList.push(rightStick);
 
         });
 
-        football = new THREE.Mesh(new THREE.SphereGeometry(10, 100, 100), new THREE.MeshNormalMaterial());
+        football = new THREE.Mesh(new THREE.SphereGeometry(100, 100, 100), new THREE.MeshNormalMaterial());
         football.overdraw = true;
 
         football.position.set(0, 0, 0);
 
         scene.add(football);
+
+         //adding a wall 
+        /*
+        var wallGeometry = new THREE.CubeGeometry( 100, 100, 20, 1, 1, 1 );
+        var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
+
+        var wall = new THREE.Mesh(wallGeometry, wallMaterial);
+        wall.position.set(-500, 0, 0);
+        scene.add(wall);
+        
+        collidableMeshList.push(wall);
+        
+
+        goal1 =new THREE.Mesh(new THREE.CubeGeometry(10, 100, 100), new THREE.MeshNormalMaterial());
+        goal1.overdraw = true;
+
+        goal1.position.set(-900, 0, 0);
+
+        
+        scene.add(goal1);
+        collidableMeshList.push(goal1);
+
+        goal2 = new THREE.Mesh(new THREE.CubeGeometry(10, 100, 100), new THREE.MeshNormalMaterial());
+        goal2.overdraw = true;
+
+        goal2.position.set(900, 0, 0);
+
+        scene.add(goal2);
+        collidableMeshList.push(goal2);
+        */
     }
     
 
     function render() {
         var timer = Date.now() * 0.05;
 
+        football.position.x -= 1;
         
         renderer.render(scene, camera);
-    };
+    }
 
     function update() {
 
@@ -161,8 +214,27 @@
         if(keyboard.pressed("right")){
             leftStick.rotation.z -= 0.3;
         }
+
+        var originPoint = football.position.clone();
+
+        
+        for (var vertexIndex = 0; vertexIndex < football.geometry.vertices.length; vertexIndex++){       
+            var localVertex = football.geometry.vertices[vertexIndex].clone();
+            var globalVertex = localVertex.applyMatrix4( football.matrix );
+            var directionVector = globalVertex.sub( football.position );
+
+            var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
+            var collisionResults = ray.intersectObjects( collidableMeshList );
+
+            if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()){
+                console.log('hit yess !! ');
+            }
+                
+        }
         
     }
+
+    
 
     function animate() {
     

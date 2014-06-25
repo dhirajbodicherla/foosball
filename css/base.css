@@ -6,7 +6,7 @@ body
 }
 canvas{
 	z-index: 1000;
-	display: none;
+	
 }
 .score-card {
     position: fixed;

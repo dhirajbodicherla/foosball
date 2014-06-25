@@ -6,7 +6,7 @@
         <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
     </head>
     <body>
-        <div class="score-card">
+        <div class="score-card hide">
             <div class="timer-card">
                 <div class="card-content">
                     07:38
@@ -36,15 +36,15 @@
             Loading ...
         </div>
 
-        <div class="country-select">
+        <div class="country-select hide">
             <div class="bg glass">
             </div>
             <div class="wrapper">
             </div>
             <div class="content">
-                <label>Select country</label> <br />
+                <label>Game on !!</label> <br />
                 <select name="country_id">
-                    <option value="-1"></option>
+                    <option value="-1">Select a country</option>
                     <option value="67">United States</option>
                     <option value="1">Algeria</option>
                     <option value="2">Angola</option>
@@ -180,7 +180,7 @@
                                 if(data.status == 0){
                                     return;    
                                 }else{
-
+                                    //var game = new Game(data.data);
                                 }
                             }
                         }); 
