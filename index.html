@@ -31,6 +31,99 @@
             </div>
             <div class="clear-left"></div>
         </div>
+
+        <div class="loader hide">
+            Loading ...
+        </div>
+
+        <div class="country-select">
+            <div class="bg glass">
+            </div>
+            <div class="wrapper">
+            </div>
+            <div class="content">
+                <label>Select country</label> <br />
+                <select name="country_id">
+                    <option value="-1"></option>
+                    <option value="67">United States</option>
+                    <option value="1">Algeria</option>
+                    <option value="2">Angola</option>
+                    <option value="3">Argentina</option>
+                    <option value="4">Armenia</option>
+                    <option value="5">Austria</option>
+                    <option value="6">Belgium</option>
+                    <option value="7">Bolivia</option>
+                    <option value="8">Bosnia Herzegovina</option>
+                    <option value="9">Brazil</option>
+                    <option value="10">Bulgaria</option>
+                    <option value="11">Burkina Faso</option>
+                    <option value="12">Cameroon</option>
+                    <option value="13">Canada</option>
+                    <option value="14">Chile</option>
+                    <option value="15">Colombia</option>
+                    <option value="16">Costa Rica</option>
+                    <option value="17">Croatia</option>
+                    <option value="18">Cuba</option>
+                    <option value="19">Czech Republic</option>
+                    <option value="20">Denmark</option>
+                    <option value="21">DR Congo</option>
+                    <option value="22">Ecuador</option>
+                    <option value="23">Egypt</option>
+                    <option value="24">England</option>
+                    <option value="25">Finland</option>
+                    <option value="26">France</option>
+                    <option value="27">Gabon</option>
+                    <option value="28">Georgia</option>
+                    <option value="29">Germany</option>
+                    <option value="30">Ghana</option>
+                    <option value="31">Greece</option>
+                    <option value="32">Guinea</option>
+                    <option value="33">Holland</option>
+                    <option value="34">Hungary</option>
+                    <option value="35">Iceland</option>
+                    <option value="36">Ireland Republic</option>
+                    <option value="37">Israel</option>
+                    <option value="38">Italy</option>
+                    <option value="39">Ivory Coast</option>
+                    <option value="40">Japan</option>
+                    <option value="41">Kenya</option>
+                    <option value="42">Korea Republic</option>
+                    <option value="43">Mexico</option>
+                    <option value="44">Montenegro</option>
+                    <option value="45">Morocco</option>
+                    <option value="46">Nigeria</option>
+                    <option value="47">Northern Ireland</option>
+                    <option value="48">Norway</option>
+                    <option value="49">Paraguay</option>
+                    <option value="50">Peru</option>
+                    <option value="51">Poland</option>
+                    <option value="52">Portugal</option>
+                    <option value="53">Romania</option>
+                    <option value="54">Russia</option>
+                    <option value="55">Scotland</option>
+                    <option value="56">Senegal</option>
+                    <option value="57">Serbia</option>
+                    <option value="0">Slovenia</option>
+                    <option value="58">Slovakia</option>
+                    <option value="59">South Africa</option>
+                    <option value="60">Spain</option>
+                    <option value="61">Sweden</option>
+                    <option value="62">Switzerland</option>
+                    <option value="63">Togo</option>
+                    <option value="64">Tunisia</option>
+                    <option value="65">Turkey</option>
+                    <option value="66">Ukraine</option>
+                    <option value="68">Uruguay</option>
+                    <option value="69">Uzbekistan</option>
+                    <option value="70">Venezuela</option>
+                    <option value="71">Wales</option>
+                    <option value="72">Zambia</option>
+                </select>
+                <label class="error"></label>
+                <input type="image" id="country-submit" class="submit-image" src="css/images/football.png" />
+            </div>
+        </div>
+
         <script src="js/lib/jquery-1.9.1.js"></script>
         <script src="js/lib/three.min.js"></script>
         <script src="js/lib/OBJLoader.js"></script>
@@ -42,24 +135,60 @@
         <script src="js/script.js"></script>
         <script type="text/javascript">
             $(document).ready(function  () {
-                $.ajax({
-                    type : 'get',
-                    url : 'http://www.telize.com/geoip?callback=getgeoip',
-                    success : function(data){
-                        getPlayerDetails(data.country);
-                    }
-                });
 
-                function getPlayerDetails(country){
-                    $.ajax({
-                        type : 'post',
-                        url : 'php/index.php',
-                        data : { 'country_name' : country },
-                        success : function(data){
-                            console.log(data);
-                        }
+                (function App(){
+
+                    function init () {
+                        $.ajax({
+                            type : 'get',
+                            url : 'http://www.telize.com/geoip?callback=getgeoip',
+                            success : function(data){
+                                getPlayerDetails(data.country);
+                            },
+                            error : function  (xhr) {
+                                if(xhr.status === 0){
+                                    showUserSelection();
+                                }
+                            }
+                        });
+                    }
+                    function showUserSelection(){
+                        $('.country-select').removeClass('show')
+                    }
+                    function getPlayerDetails(country) {
+                        $.ajax({
+                            type : 'post',
+                            url : 'php/index.php',
+                            data : { 'country_name' : country },
+                            success : function(data){
+                                console.log(data);
+                            }
+                        });      
+                    }
+
+                    $('#country-submit').click(function (e) {
+                        var error_container = $('.error');
+                        var country_id = $('select[name="country_id"] option:selected').val();
+
+                        $.ajax({
+                            type : 'post',
+                            dataType : 'json',
+                            url : 'php/index.php',
+                            data : { 'country_id' : country_id },
+                            success : function(data){
+                                error_container.html(data.message);
+                                if(data.status == 0){
+                                    return;    
+                                }else{
+
+                                }
+                            }
+                        }); 
                     });
-                }
+
+                    //init();
+                })();
+                
             });
         </script>
     </body>

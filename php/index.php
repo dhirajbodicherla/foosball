@@ -8,9 +8,9 @@ extract($_REQUEST);
 
 $response = array('status' => '', 'message' => '', 'data' => '');
 
-$country_id = Helpers::getCountryId($country_name);
+//$country_id = Helpers::getCountryId($country_name);
 
-if( isset($country_name) && $country_id == -1 ){
+if( $country_id == '-1' ){
 
 	$response['status'] = 0;
 	$response['message'] = "Country not found. Please try again";
@@ -21,7 +21,7 @@ if( isset($country_name) && $country_id == -1 ){
 
 }
 
-$dbh = Helpers::dbConnectLeaderboard();
+$dbh = Helpers::dbConnect();
 
 $sql_get_player_info = "SELECT * 
 						FROM player 
@@ -34,7 +34,7 @@ $sql_params['country_id_pla'] = $country_id;
 
 $stmt = Helpers::executeQuery($sql_get_player_info, $sql_params, 'bad request');
 
-$player_object = $stmt->fetch();
+$player_object = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $response['status'] = 1;
 $response['data'] = $player_object;

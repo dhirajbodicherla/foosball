@@ -29,6 +29,7 @@ canvas{
     font-size: 20px;
     background-color: rgba(0,0,0,0.2);
     color : #F0EAEA;
+
 }
 .left-card {
     float: left;
@@ -41,29 +42,17 @@ canvas{
     bottom: 0px;
     font-size: 16px;
 
-    -ms-transform: skew(20deg,0deg); /* IE 9 */
-    -webkit-transform: skew(20deg,0deg); /* Chrome, Safari, Opera */
+    -ms-transform: skew(20deg,0deg);
+    -webkit-transform: skew(20deg,0deg);
     transform: skew(20deg,0deg);
     z-index: 1001;
     position: relative;
-    /* Note: This gradient may render differently in browsers that don't support the unprefixed gradient syntax */
-
-	/* IE10 Consumer Preview */ 
+    
 	background-image: -ms-linear-gradient(top left, #1D0061 0%, #55BAD4 100%);
-
-	/* Mozilla Firefox */ 
-	background-image: -moz-linear-gradient(top left, #1D0061 0%, #55BAD4 100%);
-
-	/* Opera */ 
+    background-image: -moz-linear-gradient(top left, #1D0061 0%, #55BAD4 100%);
 	background-image: -o-linear-gradient(top left, #1D0061 0%, #55BAD4 100%);
-
-	/* Webkit (Safari/Chrome 10) */ 
 	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #1D0061), color-stop(1, #55BAD4));
-
-	/* Webkit (Chrome 11+) */ 
 	background-image: -webkit-linear-gradient(top left, #1D0061 0%, #55BAD4 100%);
-
-	/* W3C Markup, IE10 Release Preview */ 
 	background-image: linear-gradient(to bottom right, #1D0061 0%, #55BAD4 100%);
 
 	-webkit-box-shadow: -2px -1px 5px 0px rgba(31,31,31,1);
@@ -87,29 +76,17 @@ canvas{
     font-size: 20px;
     font-weight: bold;
     text-align: center;
+    border-top: 1px solid lightgray;
 
-    /* IE10 Consumer Preview */ 
 	background-image: -ms-linear-gradient(top, #FFFFFF 0%, #DBDBDB 100%);
-
-	/* Mozilla Firefox */ 
 	background-image: -moz-linear-gradient(top, #FFFFFF 0%, #DBDBDB 100%);
-
-	/* Opera */ 
 	background-image: -o-linear-gradient(top, #FFFFFF 0%, #DBDBDB 100%);
-
-	/* Webkit (Safari/Chrome 10) */ 
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #DBDBDB));
-
-	/* Webkit (Chrome 11+) */ 
 	background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #DBDBDB 100%);
-
-	/* W3C Markup, IE10 Release Preview */ 
 	background-image: linear-gradient(to bottom, #FFFFFF 0%, #DBDBDB 100%);
 
-	border-top: 1px solid lightgray;
-
-	-ms-transform: perspective(100px) rotateX(-20deg); /* IE 9 */
-    -webkit-transform: perspective(100px) rotateX(-20deg); /* Chrome, Safari, Opera */
+	-ms-transform: perspective(100px) rotateX(-20deg);
+    -webkit-transform: perspective(100px) rotateX(-20deg);
     transform: perspective(100px) rotateX(-20deg);
 
 
@@ -124,55 +101,152 @@ canvas{
     text-align: center;
     bottom: 0px;
     font-size: 16px;
-
-    -ms-transform: skew(-20deg,0deg); /* IE 9 */
-    -webkit-transform: skew(-20deg,0deg); /* Chrome, Safari, Opera */
-    transform: skew(-20deg,0deg);
-    z-index: 1001;
     position: relative;
+    z-index: 1001;
+    color : #F0EAEA;
 
-	/* Note: This gradient may render differently in browsers that don't support the unprefixed gradient syntax */
-
-	/* IE10 Consumer Preview */ 
+    -ms-transform: skew(-20deg,0deg);
+    -webkit-transform: skew(-20deg,0deg);
+    transform: skew(-20deg,0deg);
+    
 	background-image: -ms-linear-gradient(top right, #1D0061 0%, #55BAD4 100%);
-
-	/* Mozilla Firefox */ 
 	background-image: -moz-linear-gradient(top right, #1D0061 0%, #55BAD4 100%);
-
-	/* Opera */ 
 	background-image: -o-linear-gradient(top right, #1D0061 0%, #55BAD4 100%);
-
-	/* Webkit (Safari/Chrome 10) */ 
 	background-image: -webkit-gradient(linear, right top, left bottom, color-stop(0, #1D0061), color-stop(1, #55BAD4));
-
-	/* Webkit (Chrome 11+) */ 
 	background-image: -webkit-linear-gradient(top right, #1D0061 0%, #55BAD4 100%);
-
-	/* W3C Markup, IE10 Release Preview */ 
 	background-image: linear-gradient(to bottom left, #1D0061 0%, #55BAD4 100%);
 
 	-webkit-box-shadow: 2px -1px 5px 0px rgba(31,31,31,1);
 	-moz-box-shadow: 2px -1px 5px 0px rgba(31,31,31,1);
 	box-shadow: 2px -1px 5px 0px rgba(31,31,31,1);
 
-	color : #F0EAEA;
-
 }
 .left-card > .card-content{
-    -ms-transform: skew(-20deg,0deg); /* IE 9 */
-    -webkit-transform: skew(-20deg,0deg); /* Chrome, Safari, Opera */
+    -ms-transform: skew(-20deg,0deg);
+    -webkit-transform: skew(-20deg,0deg);
     transform: skew(-20deg,0deg);
 }
 .middle-card > .card-content{
-	-ms-transform: perspective(100px) rotateX(20deg); /* IE 9 */
-    -webkit-transform: perspective(100px) rotateX(20deg); /* Chrome, Safari, Opera */
+	-ms-transform: perspective(100px) rotateX(20deg);
+    -webkit-transform: perspective(100px) rotateX(20deg);
     transform: perspective(100px) rotateX(20deg);
 }
 .right-card > .card-content{
-    -ms-transform: skew(20deg,0deg); /* IE 9 */
-    -webkit-transform: skew(20deg,0deg); /* Chrome, Safari, Opera */
+    -ms-transform: skew(20deg,0deg);
+    -webkit-transform: skew(20deg,0deg);
     transform: skew(20deg,0deg);
 }
 .clear-left {
     clear: left;
+}
+.loader {
+    width: 300px;
+    height: 260px;
+    position: relative;
+    left: 50%;
+    margin-left: -150px;
+    top: 10rem;
+    background-image: url('images/yellow_card.png');
+    background-repeat:repeat-y;
+    font : 300 30px/1.2 'Gotham SSm A', 'Gotham SSm B', sans-serif;
+    text-align: center;
+    
+    -webkit-transition: -webkit-transform 1s;
+    -moz-transition: -moz-transform 1s;
+    -o-transition: -o-transform 1s;
+    transition: transform 1s;
+}
+.country-select {
+    width: 300px;
+    height: 260px;
+    position: relative;
+    left: 50%;
+    margin-left: -150px;
+    top: 10rem;
+    /*
+    -webkit-box-shadow: 1px 1px 10px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 1px 10px 0px rgba(0,0,0,0.75);
+    box-shadow: 1px 1px 10px 0px rgba(0,0,0,0.75);
+    */
+
+    -webkit-transition: -webkit-transform 1s;
+    -moz-transition: -moz-transform 1s;
+    -o-transition: -o-transform 1s;
+    transition: transform 1s;
+
+}
+.flip {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+.country-select > .bg {
+    position: absolute;
+    width: 98%;
+    height: 98%;
+    background-image: url('images/stadium.jpg');
+    top: 2px;
+    left: 2px;
+}
+.country-select > .wrapper {
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    background-image: -ms-radial-gradient(left bottom, circle farthest-side, rgba(205,207,202, 0.2) 0%, rgba(239,239,239,0.9) 100%);
+    background-image: -moz-radial-gradient(left bottom, circle farthest-side, rgba(205,207,202, 0.2) 0%, rgba(239,239,239,0.9) 100%);
+    background-image: -o-radial-gradient(left bottom, circle farthest-side, rgba(205,207,202, 0.2) 0%, rgba(239,239,239,0.9) 100%);
+    background-image: -webkit-gradient(radial, left bottom, 0, left bottom, 954, color-stop(0, rgba(205,207,202, 0.2)), color-stop(1, rgba(239,239,239,0.9)));
+    background-image: -webkit-radial-gradient(left bottom, circle farthest-side, rgba(205,207,202, 0.2) 0%, rgba(239,239,239,0.9) 100%);
+    background-image: radial-gradient(circle farthest-side at left bottom, rgba(205,207,202, 0.2) 0%, rgba(239,239,239,0.9) 100%);
+}
+.country-select > .content{
+    font : 300 30px/1.2 'Gotham SSm A', 'Gotham SSm B', sans-serif;
+    position: absolute;
+    top: 30%;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    text-align: center;
+}
+.country-select >.content > select {
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 30px;
+    color: white;
+}
+.country-select > .content > .error {
+    font-size: 16px;
+    color: red;
+}
+
+.country-select > .content > .submit-image {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    opacity: 0.6;
+
+}
+.country-select > .content > .submit-image:hover {
+    opacity: 1;
+    
+}
+
+.glass {
+    -webkit-filter: blur(3px);
+    -moz-filter   : blur(3px);
+    -ms-filter    : blur(3px);
+    -o-filter     : blur(3px);
+    filter        : blur(3px);
+}
+
+.hide {
+    display: none;
+}
+.show {
+    display: block;
 }
