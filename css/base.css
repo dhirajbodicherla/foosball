@@ -1,7 +1,178 @@
 body 
 {
-	font-family: Monospace;
-	font-weight: bold;
 	margin: 0px;
 	overflow: hidden;
+	font-family: 'Ubuntu', sans-serif;
+}
+canvas{
+	z-index: 1000;
+	display: none;
+}
+.score-card {
+    position: fixed;
+    top: 0.5rem;
+    left: 50%;
+    padding: 5px 10px;
+    background : transparent;
+    overflow: hidden;
+    margin-left: -165px;
+}
+.timer-card{
+	float : left;
+	width: 120px;
+    margin: 0px -10px 0px 0px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 6px;
+    text-align: center;
+    bottom: 0px;
+    font-size: 20px;
+    background-color: rgba(0,0,0,0.2);
+    color : #F0EAEA;
+}
+.left-card {
+    float: left;
+    width: 80px;
+    margin: 0px -10px 0px 0px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 6px;
+    text-align: center;
+    bottom: 0px;
+    font-size: 16px;
+
+    -ms-transform: skew(20deg,0deg); /* IE 9 */
+    -webkit-transform: skew(20deg,0deg); /* Chrome, Safari, Opera */
+    transform: skew(20deg,0deg);
+    z-index: 1001;
+    position: relative;
+    /* Note: This gradient may render differently in browsers that don't support the unprefixed gradient syntax */
+
+	/* IE10 Consumer Preview */ 
+	background-image: -ms-linear-gradient(top left, #1D0061 0%, #55BAD4 100%);
+
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(top left, #1D0061 0%, #55BAD4 100%);
+
+	/* Opera */ 
+	background-image: -o-linear-gradient(top left, #1D0061 0%, #55BAD4 100%);
+
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #1D0061), color-stop(1, #55BAD4));
+
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(top left, #1D0061 0%, #55BAD4 100%);
+
+	/* W3C Markup, IE10 Release Preview */ 
+	background-image: linear-gradient(to bottom right, #1D0061 0%, #55BAD4 100%);
+
+	-webkit-box-shadow: -2px -1px 5px 0px rgba(31,31,31,1);
+	-moz-box-shadow: -2px -1px 5px 0px rgba(31,31,31,1);
+	box-shadow: -2px -1px 5px 0px rgba(31,31,31,1);
+
+	color : #F0EAEA;
+}
+
+.middle-card{
+    float: left;
+    border-radius: 2px;
+    bottom: 0px;
+    width: 50px;
+    padding: 0px 5px;
+    line-height: 30px;
+    height: 40px;
+    z-index: 1002;
+    position: relative;
+    bottom: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+
+    /* IE10 Consumer Preview */ 
+	background-image: -ms-linear-gradient(top, #FFFFFF 0%, #DBDBDB 100%);
+
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(top, #FFFFFF 0%, #DBDBDB 100%);
+
+	/* Opera */ 
+	background-image: -o-linear-gradient(top, #FFFFFF 0%, #DBDBDB 100%);
+
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #DBDBDB));
+
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #DBDBDB 100%);
+
+	/* W3C Markup, IE10 Release Preview */ 
+	background-image: linear-gradient(to bottom, #FFFFFF 0%, #DBDBDB 100%);
+
+	border-top: 1px solid lightgray;
+
+	-ms-transform: perspective(100px) rotateX(-20deg); /* IE 9 */
+    -webkit-transform: perspective(100px) rotateX(-20deg); /* Chrome, Safari, Opera */
+    transform: perspective(100px) rotateX(-20deg);
+
+
+}
+.right-card{
+    float: left;
+    width: 80px;
+    margin: 0px 0px 0px -10px;
+    height: 30px;
+    border-radius: 6px;
+    line-height: 30px;
+    text-align: center;
+    bottom: 0px;
+    font-size: 16px;
+
+    -ms-transform: skew(-20deg,0deg); /* IE 9 */
+    -webkit-transform: skew(-20deg,0deg); /* Chrome, Safari, Opera */
+    transform: skew(-20deg,0deg);
+    z-index: 1001;
+    position: relative;
+
+	/* Note: This gradient may render differently in browsers that don't support the unprefixed gradient syntax */
+
+	/* IE10 Consumer Preview */ 
+	background-image: -ms-linear-gradient(top right, #1D0061 0%, #55BAD4 100%);
+
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(top right, #1D0061 0%, #55BAD4 100%);
+
+	/* Opera */ 
+	background-image: -o-linear-gradient(top right, #1D0061 0%, #55BAD4 100%);
+
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, right top, left bottom, color-stop(0, #1D0061), color-stop(1, #55BAD4));
+
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(top right, #1D0061 0%, #55BAD4 100%);
+
+	/* W3C Markup, IE10 Release Preview */ 
+	background-image: linear-gradient(to bottom left, #1D0061 0%, #55BAD4 100%);
+
+	-webkit-box-shadow: 2px -1px 5px 0px rgba(31,31,31,1);
+	-moz-box-shadow: 2px -1px 5px 0px rgba(31,31,31,1);
+	box-shadow: 2px -1px 5px 0px rgba(31,31,31,1);
+
+	color : #F0EAEA;
+
+}
+.left-card > .card-content{
+    -ms-transform: skew(-20deg,0deg); /* IE 9 */
+    -webkit-transform: skew(-20deg,0deg); /* Chrome, Safari, Opera */
+    transform: skew(-20deg,0deg);
+}
+.middle-card > .card-content{
+	-ms-transform: perspective(100px) rotateX(20deg); /* IE 9 */
+    -webkit-transform: perspective(100px) rotateX(20deg); /* Chrome, Safari, Opera */
+    transform: perspective(100px) rotateX(20deg);
+}
+.right-card > .card-content{
+    -ms-transform: skew(20deg,0deg); /* IE 9 */
+    -webkit-transform: skew(20deg,0deg); /* Chrome, Safari, Opera */
+    transform: skew(20deg,0deg);
+}
+.clear-left {
+    clear: left;
 }

@@ -3,8 +3,35 @@
     <head>
         <title>Foosball</title>
         <link rel="stylesheet" type="text/css" href="css/base.css">
+        <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
     </head>
     <body>
+        <div class="score-card">
+            <div class="timer-card">
+                <div class="card-content">
+                    07:38
+                </div>
+            </div>
+            <div class="left-card">
+                <div class="card-content">
+                    MC
+                </div>
+            </div>
+
+            <div class="middle-card">
+                <div class="card-content">
+                    0 - 1
+                </div>
+            </div>
+
+            <div class="right-card">
+                <div class="card-content">
+                    BAR
+                </div>
+            </div>
+            <div class="clear-left"></div>
+        </div>
+        <script src="js/lib/jquery-1.9.1.js"></script>
         <script src="js/lib/three.min.js"></script>
         <script src="js/lib/OBJLoader.js"></script>
         <script src="js/lib/Detector.js"></script>
@@ -13,5 +40,27 @@
         <script src="js/lib/OrbitControls.js"></script>
         <script src="js/lib/KeyboardState.js"></script>
         <script src="js/script.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function  () {
+                $.ajax({
+                    type : 'get',
+                    url : 'http://www.telize.com/geoip?callback=getgeoip',
+                    success : function(data){
+                        getPlayerDetails(data.country);
+                    }
+                });
+
+                function getPlayerDetails(country){
+                    $.ajax({
+                        type : 'post',
+                        url : 'php/index.php',
+                        data : { 'country_name' : country },
+                        success : function(data){
+                            console.log(data);
+                        }
+                    });
+                }
+            });
+        </script>
     </body>
 </html>
