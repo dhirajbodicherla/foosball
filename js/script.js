@@ -101,6 +101,7 @@
             console.log( item, loaded, total );
         };
 
+        /*
         var texture = new THREE.Texture();
 
         var loader = new THREE.ImageLoader(manager);
@@ -110,43 +111,46 @@
             texture.needsUpdate = true;
 
         }); 
-
-        var loader = new THREE.OBJLoader(manager);
-        loader.load( 'models/FoosballPlayer_new.obj', function(model){
-            model.traverse( function ( child ) {
-                if (child instanceof THREE.Mesh ) {
-                    child.material.map = texture;
-                }
-            });
-
-            leftStick = model;
-
-            leftStick.position.set(-800, 0, 0);
-            leftStick.scale.set(300,300,300);
-            
-            scene.add(leftStick);
-            collidableMeshList.push(leftStick);
         
+        */
 
-        });
+        var handGeometry = new THREE.CylinderGeometry( 12, 12, 600, 32 );
+        var handMaterial = new THREE.MeshBasicMaterial( {color: 0xff0f00} );
+        var hands = new THREE.Mesh( handGeometry, handMaterial );
 
-        var loader = new THREE.OBJLoader(manager);
-        loader.load( 'models/FoosballPlayer_new.obj', function(model){
-            model.traverse( function ( child ) {
-                if (child instanceof THREE.Mesh ) {
-                    child.material.map = texture;
-                }
-            });
+        hands.position.set(0, 0, 0);
 
-            rightStick = model;
+        var headGeometry = new THREE.SphereGeometry( 14, 32, 32 );
+        var headMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+        var head = new THREE.Mesh( headGeometry, headMaterial );
 
-            rightStick.position.set(800, 0, 0);
-            rightStick.scale.set(300,300,300);
+        head.position.set(0, 0, 10);
 
-            scene.add( rightStick );
-            collidableMeshList.push(rightStick);
+        var torsoGeometry = new THREE.CubeGeometry( 10, 20, 50 );
+        var torsoMaterial = new THREE.MeshBasicMaterial( {color: 0x0000ff} );
+        var torso = new THREE.Mesh( torsoGeometry, torsoMaterial );
 
-        });
+        torso.position.set(0, 0, -20);
+
+        leftStick = new THREE.Object3D();
+        leftStick.add(hands);
+        leftStick.add(head);
+        leftStick.add(torso);
+
+        leftStick.position.set(-800, 0, 0);
+
+        scene.add(leftStick);
+
+        //collidableMeshList.push(leftStick);
+
+        rightStick = new THREE.Object3D();
+        rightStick.add(hands.clone());
+        rightStick.add(head.clone());
+        rightStick.add(torso.clone());
+
+        rightStick.position.set(800, 0, 0);
+
+        scene.add(rightStick);
 
         football = new THREE.Mesh(new THREE.SphereGeometry(30, 100, 100), new THREE.MeshNormalMaterial());
         football.overdraw = true;
@@ -154,18 +158,6 @@
         football.position.set(0, 0, 0);
 
         scene.add(football);
-
-         //adding a wall 
-        
-        // var wallGeometry = new THREE.CubeGeometry( 100, 100, 20, 1, 1, 1 );
-        // var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
-
-        // var wall = new THREE.Mesh(wallGeometry, wallMaterial);
-        // wall.position.set(-500, 0, 0);
-        // scene.add(wall);
-        
-        // collidableMeshList.push(wall);
-        
 
         goal1 =new THREE.Mesh(new THREE.CubeGeometry(30, 10, 600), new THREE.MeshNormalMaterial());
         goal1.overdraw = true;
@@ -205,19 +197,22 @@
         var moveDistance = 5 * clock.getDelta(); 
 
         if(keyboard.pressed("up")){
-            leftStick.translateZ( -10 );
+            leftStick.translateY( 10 );
         }
 
         if(keyboard.pressed("down")){
-            leftStick.translateZ(  10 );
+            leftStick.translateY( -10 );
         }
 
         if(keyboard.pressed("left")){
-            leftStick.rotation.z += 0.3;
+            leftStick.rotation.y += 0.3;
+            //leftStick.rotateOnAxis(leftStickAxis, 0);
         }
         if(keyboard.pressed("right")){
-            leftStick.rotation.z -= 0.3;
+            leftStick.rotation.y -= 0.3;
         }
+
+        /*
 
         var originPoint = football.position.clone();
 
@@ -236,7 +231,7 @@
             }
                 
         }
-        
+        */
     }
 
     function ballPhysics(){
