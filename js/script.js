@@ -36,7 +36,8 @@
     , directionalLight = new THREE.DirectionalLight( 0xffeedd )
     , ground
     , collidableMeshList = [];
-    var ballDirX = 1, ballDirY = 1, ballSpeed = 15;
+    var rightStickDirY = 0, paddleSpeed = 10;
+    var ballDirX = 1, ballDirY = 1, ballSpeed = 5;
     var myScore = 0, opponentScore = 0;
 
     init();
@@ -140,7 +141,7 @@
         leftStick.add(head);
         leftStick.add(torso);
         leftStick.position.set(-800, 0, 80);
-        leftStick.position.x = -800;
+        leftStick.name = "left-stick";
         scene.add(leftStick);
 
         //collidableMeshList.push(leftStick);
@@ -150,6 +151,7 @@
         rightStick.add(head.clone());
         rightStick.add(torso.clone());
         rightStick.position.set(800, 0, 80);
+        rightStick.name = "right-stick";
         scene.add(rightStick);
 
         var footballMaterial = new THREE.MeshLambertMaterial({
@@ -164,6 +166,7 @@
         goal1.overdraw = true;
         goal1.position.set(-900, 0, 0);
         goal1.rotation.x = Math.PI / 2;
+        goal1.name = "goal1";
         scene.add(goal1);
         collidableMeshList.push(goal1);
 
@@ -171,6 +174,7 @@
         goal2.overdraw = true;
         goal2.position.set(900, 0, 0);
         goal2.rotation.x = Math.PI / 2;
+        goal2.name = "goal2";
         scene.add(goal2);
         collidableMeshList.push(goal2);
         
@@ -209,27 +213,31 @@
             leftStick.rotation.y -= 0.3;
         }
 
-        return;
+        var rays = [
+            new THREE.Vector3(0, 0, 1),
+            new THREE.Vector3(1, 0, 1),
+            new THREE.Vector3(1, 0, 0),
+            new THREE.Vector3(1, 0, -1),
+            new THREE.Vector3(0, 0, -1),
+            new THREE.Vector3(-1, 0, -1),
+            new THREE.Vector3(-1, 0, 0),
+            new THREE.Vector3(-1, 0, 1)
+        ];
 
-        var originPoint = football.position.clone();
-        
-        for (var vertexIndex = 0; vertexIndex < football.geometry.vertices.length; vertexIndex++){       
-            var localVertex = football.geometry.vertices[vertexIndex].clone();
-            var globalVertex = localVertex.applyMatrix4( football.matrix );
-            var directionVector = globalVertex.sub( football.position );
+        var caster = new THREE.Raycaster()
+        , collisions
+        , distance = 50;
 
-            var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
-            var collisionResults = ray.intersectObjects(  );
-
-            if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()){
-                ballDirX = -ballDirX;
-
-               
+        for (i = 0; i < rays.length; i += 1) {
+            caster.set(football.position, rays[i]);
+            collisions = caster.intersectObjects(collidableMeshList);
+            if (collisions.length > 0 && collisions[0].distance <= distance) {
+                console.log("collided " + collisions[0].object.name);
             }
-                
         }
-        
     }
+
+
 
     function ballPhysics(){
     if (football.position.x <= -900){   
@@ -284,6 +292,36 @@
     }
 }
 
+function opponentPaddleMovement()
+{
+
+    //leftStick.children[2]
+    // Lerp towards the ball on the y plane
+    rightStickDirY = (football.position.y - rightStick.position.y);
+    
+    // in case the Lerp function produces a value above max paddle speed, we clamp it
+    if (Math.abs(rightStickDirY) <= paddleSpeed)
+    {   
+        rightStick.position.y += rightStickDirY;
+    }
+    // if the lerp value is too high, we have to limit speed to paddleSpeed
+    else
+    {
+        // if paddle is lerping in +ve direction
+        if (rightStickDirY > paddleSpeed)
+        {
+            rightStick.position.y += paddleSpeed;
+        }
+        // if paddle is lerping in -ve direction
+        else if (rightStickDirY < -paddleSpeed)
+        {
+            rightStick.position.y -= paddleSpeed;
+        }
+    }
+}
+
+
+
 
 
     function animate() {
@@ -291,6 +329,7 @@
         requestAnimationFrame( animate );
         ballPhysics();        
         update();
+        opponentPaddleMovement();
     }
 
     animate();
