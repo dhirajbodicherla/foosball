@@ -6,7 +6,7 @@
         <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
     </head>
     <body>
-        <div class="score-card hide">
+        <div class="score-card">
             <div class="timer-card">
                 <div class="card-content">
                     07:38
@@ -139,6 +139,12 @@
             $(document).ready(function  () {
 
                 (function App(){
+
+                    this.scoreCard = function  (left, right) {
+
+                        $('.middle-card .card-content').html(left + ' - ' + right);
+
+                    };
 
                     function init () {
                         $.ajax({

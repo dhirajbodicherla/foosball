@@ -43,13 +43,20 @@
 
     function init(){
 
-        //camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 2000)
-        //camera = new THREE.OrthographicCamera( window.innerWidth / 2, window.innerHeight / 2, 70, 1, 1000, - 1000, 1000 );
-        camera = new THREE.OrthographicCamera( -aspectRatio * viewSize / 2, aspectRatio * viewSize / 2, viewSize / 2, -viewSize / 2, -2000, 2000 );
+        // test camera
+        /*
+        camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 1, 2000)
+        camera.position.set(-750, -950, 100);
+        camera.rotation.x = Math.PI / 2;
+        */
+        
+        //main camera
 
-        camera.position.set(0, 200, 250);
+        camera = new THREE.OrthographicCamera( -aspectRatio * viewSize / 2, aspectRatio * viewSize / 2, viewSize / 2, -viewSize / 2, -2000, 2000 );
+        camera.position.set(0, 0, 250);
         //camera.rotation.x = Math.PI / 2;
         camera.lookAt(new THREE.Vector3(0, 50, 0));
+        
 
         renderer.setClearColor( 0x000000, 0 );
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -61,36 +68,35 @@
         directionalLight.position.set( 2, 0, 1 );
         scene.add( directionalLight );
 
-        ground = new THREE.Mesh(new THREE.PlaneGeometry(canvasWidth, canvasHeight), new THREE.MeshNormalMaterial());
-        ground.position.set(0, -50, 0);
-        ground.rotation.x = Math.PI / 2;
-        
-        ground.overdraw = true;
+        var groundMaterial = new THREE.MeshLambertMaterial({
+            map: THREE.ImageUtils.loadTexture('css/images/grass-texture.png')
+        });
+
+
+        ground = new THREE.Mesh(new THREE.PlaneGeometry(window.innerWidth, window.innerHeight), groundMaterial);
+        ground.position.set(0, 0, 0);
+        //ground.rotation.x = Math.PI / 2;
+        //ground.overdraw = true;
         scene.add(ground);
 
-      
+     
+        /*
         // Grid
         var size = 700, step = 100;
-
         var geometry = new THREE.Geometry();
-
         for ( var i = - size; i <= size; i += step ) {
-
             geometry.vertices.push( new THREE.Vector3( - size, 0, i ) );
             geometry.vertices.push( new THREE.Vector3(   size, 0, i ) );
-
             geometry.vertices.push( new THREE.Vector3( i, 0, - size ) );
             geometry.vertices.push( new THREE.Vector3( i, 0,   size ) );
-
         }
 
         var material = new THREE.LineBasicMaterial( { color: 0x000000, opacity: 0.2 } );
-
         var line = new THREE.Line( geometry, material );
         line.type = THREE.LinePieces;
-        scene.add( line );
-
-        
+        line.rotation.x = Math.PI / 2;
+        //scene.add(line);
+        */
     }
 
     loadModels();
@@ -98,7 +104,7 @@
     function loadModels(){
         var manager = new THREE.LoadingManager();
         manager.onProgress = function ( item, loaded, total ) {
-            console.log( item, loaded, total );
+            //console.log( item, loaded, total );
         };
 
         /*
@@ -114,32 +120,27 @@
         
         */
 
-        var handGeometry = new THREE.CylinderGeometry( 14, 14, 600, 32 );
+        var handGeometry = new THREE.CylinderGeometry( 14, 12, 600, 32 );
         var handMaterial = new THREE.MeshBasicMaterial( {color: 0xff0f00} );
         var hands = new THREE.Mesh( handGeometry, handMaterial );
-
         hands.position.set(0, 0, 0);
 
         var headGeometry = new THREE.SphereGeometry( 16, 32, 32 );
         var headMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
         var head = new THREE.Mesh( headGeometry, headMaterial );
-
         head.position.set(0, 0, 10);
 
-        var torsoGeometry = new THREE.CubeGeometry( 10, 30, 60 );
+        var torsoGeometry = new THREE.CubeGeometry( 10, 25, 60 );
         var torsoMaterial = new THREE.MeshBasicMaterial( {color: 0x0000ff} );
         var torso = new THREE.Mesh( torsoGeometry, torsoMaterial );
-
         torso.position.set(0, 0, -20);
 
         leftStick = new THREE.Object3D();
         leftStick.add(hands);
         leftStick.add(head);
         leftStick.add(torso);
-
-        leftStick.position.set(-800, 0, 0);
+        leftStick.position.set(-800, 0, 80);
         leftStick.position.x = -800;
-
         scene.add(leftStick);
 
         //collidableMeshList.push(leftStick);
@@ -148,33 +149,28 @@
         rightStick.add(hands.clone());
         rightStick.add(head.clone());
         rightStick.add(torso.clone());
-
-        rightStick.position.set(800, 0, 0);
-
+        rightStick.position.set(800, 0, 80);
         scene.add(rightStick);
 
-        football = new THREE.Mesh(new THREE.SphereGeometry(30, 100, 100), new THREE.MeshNormalMaterial());
+        var footballMaterial = new THREE.MeshLambertMaterial({
+            map: THREE.ImageUtils.loadTexture('css/images/football-texture.jpg')
+        });
+        football = new THREE.Mesh(new THREE.SphereGeometry(30, 100, 100), footballMaterial);
         football.overdraw = true;
-
-        football.position.set(0, 0, 0);
-
+        football.position.set(0, 0, 28);
         scene.add(football);
 
-        goal1 =new THREE.Mesh(new THREE.CubeGeometry(30, 10, 600), new THREE.MeshNormalMaterial());
+        goal1 =new THREE.Mesh(new THREE.CubeGeometry(30, 10, 150), new THREE.MeshNormalMaterial());
         goal1.overdraw = true;
-
         goal1.position.set(-900, 0, 0);
-
-        
+        goal1.rotation.x = Math.PI / 2;
         scene.add(goal1);
         collidableMeshList.push(goal1);
 
-
-        goal2 = new THREE.Mesh(new THREE.CubeGeometry(30, 10,600), new THREE.MeshNormalMaterial());
+        goal2 = goal1.clone();
         goal2.overdraw = true;
-
         goal2.position.set(900, 0, 0);
-
+        goal2.rotation.x = Math.PI / 2;
         scene.add(goal2);
         collidableMeshList.push(goal2);
         
@@ -213,10 +209,9 @@
             leftStick.rotation.y -= 0.3;
         }
 
-        
+        return;
 
         var originPoint = football.position.clone();
-
         
         for (var vertexIndex = 0; vertexIndex < football.geometry.vertices.length; vertexIndex++){       
             var localVertex = football.geometry.vertices[vertexIndex].clone();
@@ -224,7 +219,7 @@
             var directionVector = globalVertex.sub( football.position );
 
             var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
-            var collisionResults = ray.intersectObjects( [leftStick.children[2], rightStick.children[2]] );
+            var collisionResults = ray.intersectObjects(  );
 
             if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()){
                 ballDirX = -ballDirX;
@@ -241,7 +236,8 @@
         if (football.position.y <=150 && football.position.y >= -150){
      
         opponentScore++;
-        console.log("I loose");
+        scoreCard(myScore, opponentScore);
+        //console.log("I loose");
         // document.getElementById("scores").innerHTML = score1 + "-" + score2;
         // resetBall(2);
         // matchScoreCheck();  
@@ -254,7 +250,7 @@
         {   
       
         myScore++;  
-        console.log("I win");
+        scoreCard(myScore, opponentScore);
         // document.getElementById("scores").innerHTML = score1 + "-" + score2;
         // resetBall(1);
         // matchScoreCheck();  
@@ -291,37 +287,11 @@
 
 
     function animate() {
-   
         renderer.render(scene, camera);
         requestAnimationFrame( animate );
         ballPhysics();        
         update();
-
     }
-
 
     animate();
 })();
-
-
-/*
-
-$.ajax({
-    type : 'get',
-    url : 'http://www.telize.com/geoip?callback=getgeoip',
-    success : function(data){
-        getPlayerDetails(data.country);
-    }
-});
-
-function getPlayerDetails(country){
-    $.ajax({
-        type : 'post',
-        url : 'php/index.php',
-        data : { 'country_name' : country },
-        success : function(data){
-            console.log(data);
-        }
-    });
-}
-*/
