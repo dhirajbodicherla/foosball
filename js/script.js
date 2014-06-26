@@ -121,42 +121,16 @@
         
         */
 
-        var handGeometry = new THREE.CylinderGeometry( 14, 12, 600, 32 );
-        var handMaterial = new THREE.MeshBasicMaterial( {color: 0xff0f00} );
-        var hands = new THREE.Mesh( handGeometry, handMaterial );
-        hands.position.set(0, 0, 0);
-
-        var headGeometry = new THREE.SphereGeometry( 25, 32, 32 );
-        var headMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-        var head = new THREE.Mesh( headGeometry, headMaterial );
-        head.position.set(0, 0, 10);
-
-        var torsoGeometry = new THREE.CubeGeometry( 15, 45, 60 );
-        var torsoMaterial = new THREE.MeshBasicMaterial( {color: 0x0000ff} );
-        var torso = new THREE.Mesh( torsoGeometry, torsoMaterial );
-        torso.position.set(0, 0, -20);
-
-        leftStick = new THREE.Object3D();
-        leftStick.add(hands);
-        leftStick.add(head);
-        leftStick.add(torso);
-        leftStick.position.set(-800, 0, 80);
-        leftStick.name = "left-stick";
+        leftStick = createPlayer("left-stick", -800, 0xAA3939);        
         scene.add(leftStick);
         leftStick.children[2].name = "my stick";
         collidableMeshList.push(leftStick.children[2]);
 
-        //collidableMeshList.push(leftStick);
-
-        rightStick = new THREE.Object3D();
-        rightStick.add(hands.clone());
-        rightStick.add(head.clone());
-        rightStick.add(torso.clone());
-        rightStick.position.set(800, 0, 80);
-        rightStick.name = "right-stick";
+        rightStick = createPlayer("right-stick", 800, 0x4B5AB4);
         scene.add(rightStick);
         rightStick.children[2].name = "not my stick";
         collidableMeshList.push(rightStick.children[2]);
+
 
         var footballMaterial = new THREE.MeshLambertMaterial({
             map: THREE.ImageUtils.loadTexture('css/images/football-texture.jpg')
@@ -182,6 +156,35 @@
         scene.add(goal2);
         //collidableMeshList.push(goal2);
         
+    }
+
+    function createPlayer(name, position, color){
+
+        var handTexture = new THREE.MeshLambertMaterial({
+            map: THREE.ImageUtils.loadTexture('css/images/steel-texture.jpg')
+        });
+        var handGeometry = new THREE.CylinderGeometry( 14, 12, 600, 32 );
+        var hands = new THREE.Mesh( handGeometry, handTexture );
+        hands.position.set(0, 0, 0);
+
+        var headGeometry = new THREE.SphereGeometry( 18, 32, 32 );
+        var headMaterial = new THREE.MeshBasicMaterial( {color: color } );
+        var head = new THREE.Mesh( headGeometry, headMaterial );
+        head.position.set(0, 0, 26);
+
+        var torsoGeometry = new THREE.CubeGeometry( 15, 45, 60 );
+        var torsoMaterial = new THREE.MeshBasicMaterial( {color: color} );
+        var torso = new THREE.Mesh( torsoGeometry, torsoMaterial );
+        torso.position.set(0, 0, -20);
+
+        var player = new THREE.Object3D();
+        player.add(hands);
+        player.add(head);
+        player.add(torso);
+        player.position.set(position, 0, 80);
+        player.name = name;
+
+        return player;
     }
     
 
@@ -217,6 +220,8 @@
             leftStick.rotation.y -= 0.5;
         }
 
+        ballSpeed += (5 - ballSpeed) * 0.005;
+
         var rays = [
             new THREE.Vector3(0, 0, 1),
             new THREE.Vector3(1, 0, 1),
@@ -238,6 +243,7 @@
             if (collisions.length > 0 && collisions[0].distance <= distance) {
                 console.log("collided " + collisions[0].object.name);
                 ballDirX = -ballDirX;
+                ballSpeed = 20;
             }
         }
     }
