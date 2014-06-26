@@ -36,6 +36,8 @@
     , directionalLight = new THREE.DirectionalLight( 0xffeedd )
     , ground
     , collidableMeshList = [];
+    var ballDirX = 1, ballDirY = 1, ballSpeed = 15;
+    var myScore = 0, opponentScore = 0;
 
     init();
 
@@ -124,6 +126,7 @@
             
             scene.add(leftStick);
             collidableMeshList.push(leftStick);
+        
 
         });
 
@@ -145,7 +148,7 @@
 
         });
 
-        football = new THREE.Mesh(new THREE.SphereGeometry(100, 100, 100), new THREE.MeshNormalMaterial());
+        football = new THREE.Mesh(new THREE.SphereGeometry(30, 100, 100), new THREE.MeshNormalMaterial());
         football.overdraw = true;
 
         football.position.set(0, 0, 0);
@@ -153,18 +156,18 @@
         scene.add(football);
 
          //adding a wall 
-        /*
-        var wallGeometry = new THREE.CubeGeometry( 100, 100, 20, 1, 1, 1 );
-        var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
-
-        var wall = new THREE.Mesh(wallGeometry, wallMaterial);
-        wall.position.set(-500, 0, 0);
-        scene.add(wall);
         
-        collidableMeshList.push(wall);
+        // var wallGeometry = new THREE.CubeGeometry( 100, 100, 20, 1, 1, 1 );
+        // var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
+
+        // var wall = new THREE.Mesh(wallGeometry, wallMaterial);
+        // wall.position.set(-500, 0, 0);
+        // scene.add(wall);
+        
+        // collidableMeshList.push(wall);
         
 
-        goal1 =new THREE.Mesh(new THREE.CubeGeometry(10, 100, 100), new THREE.MeshNormalMaterial());
+        goal1 =new THREE.Mesh(new THREE.CubeGeometry(30, 10, 600), new THREE.MeshNormalMaterial());
         goal1.overdraw = true;
 
         goal1.position.set(-900, 0, 0);
@@ -173,14 +176,15 @@
         scene.add(goal1);
         collidableMeshList.push(goal1);
 
-        goal2 = new THREE.Mesh(new THREE.CubeGeometry(10, 100, 100), new THREE.MeshNormalMaterial());
+
+        goal2 = new THREE.Mesh(new THREE.CubeGeometry(30, 10,600), new THREE.MeshNormalMaterial());
         goal2.overdraw = true;
 
         goal2.position.set(900, 0, 0);
 
         scene.add(goal2);
         collidableMeshList.push(goal2);
-        */
+        
     }
     
 
@@ -227,19 +231,73 @@
             var collisionResults = ray.intersectObjects( collidableMeshList );
 
             if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()){
-                console.log('hit yess !! ');
+
+               
             }
                 
         }
         
     }
 
+    function ballPhysics(){
+    if (football.position.x <= -900){   
+        if (football.position.y <=150 && football.position.y >= -150){
+     
+        opponentScore++;
+        console.log("I loose");
+        // document.getElementById("scores").innerHTML = score1 + "-" + score2;
+        // resetBall(2);
+        // matchScoreCheck();  
+        }
+        ballDirX = -ballDirX;
+    }
     
+    else if (football.position.x >= 900){
+        if (football.position.y <= 150 && football.position.z >= -150)
+        {   
+      
+        myScore++;  
+        console.log("I win");
+        // document.getElementById("scores").innerHTML = score1 + "-" + score2;
+        // resetBall(1);
+        // matchScoreCheck();  
+        }
+    ballDirX = -ballDirX;
+    }
+    else if (football.position.y <= -400)
+    {
+        ballDirY = -ballDirY;
+    }   
+    // if ball goes off the bottom side (side of table)
+    else if (football.position.y >= 400)
+    {
+        ballDirY = -ballDirY;
+    }
+
+    // update ball position over time
+    football.position.x += ballDirX * ballSpeed;
+    football.position.y += ballDirY * ballSpeed;
+    
+    // limit ball's y-speed to 2x the x-speed
+    // this is so the ball doesn't speed from left to right super fast
+    // keeps game playable for humans
+    if (ballDirY > ballSpeed * 2)
+    {
+        ballDirY = ballSpeed * 2;
+    }
+    else if (ballDirY < -ballSpeed * 2)
+    {
+        ballDirY = -ballSpeed * 2;
+    }
+}
+
+
 
     function animate() {
-    
+   
+        renderer.render(scene, camera);
         requestAnimationFrame( animate );
-        render();       
+        ballPhysics();        
         update();
 
     }
