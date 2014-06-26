@@ -126,12 +126,12 @@
         var hands = new THREE.Mesh( handGeometry, handMaterial );
         hands.position.set(0, 0, 0);
 
-        var headGeometry = new THREE.SphereGeometry( 16, 32, 32 );
+        var headGeometry = new THREE.SphereGeometry( 25, 32, 32 );
         var headMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
         var head = new THREE.Mesh( headGeometry, headMaterial );
         head.position.set(0, 0, 10);
 
-        var torsoGeometry = new THREE.CubeGeometry( 10, 25, 60 );
+        var torsoGeometry = new THREE.CubeGeometry( 15, 45, 60 );
         var torsoMaterial = new THREE.MeshBasicMaterial( {color: 0x0000ff} );
         var torso = new THREE.Mesh( torsoGeometry, torsoMaterial );
         torso.position.set(0, 0, -20);
@@ -143,6 +143,8 @@
         leftStick.position.set(-800, 0, 80);
         leftStick.name = "left-stick";
         scene.add(leftStick);
+        leftStick.children[2].name = "my stick";
+        collidableMeshList.push(leftStick.children[2]);
 
         //collidableMeshList.push(leftStick);
 
@@ -153,6 +155,8 @@
         rightStick.position.set(800, 0, 80);
         rightStick.name = "right-stick";
         scene.add(rightStick);
+        rightStick.children[2].name = "not my stick";
+        collidableMeshList.push(rightStick.children[2]);
 
         var footballMaterial = new THREE.MeshLambertMaterial({
             map: THREE.ImageUtils.loadTexture('css/images/football-texture.jpg')
@@ -168,7 +172,7 @@
         goal1.rotation.x = Math.PI / 2;
         goal1.name = "goal1";
         scene.add(goal1);
-        collidableMeshList.push(goal1);
+        //collidableMeshList.push(goal1);
 
         goal2 = goal1.clone();
         goal2.overdraw = true;
@@ -176,7 +180,7 @@
         goal2.rotation.x = Math.PI / 2;
         goal2.name = "goal2";
         scene.add(goal2);
-        collidableMeshList.push(goal2);
+        //collidableMeshList.push(goal2);
         
     }
     
@@ -206,11 +210,11 @@
         }
 
         if(keyboard.pressed("right")){
-            leftStick.rotation.y += 0.3;
+            leftStick.rotation.y += 0.5;
             //leftStick.rotateOnAxis(leftStickAxis, 0);
         }
         if(keyboard.pressed("left")){
-            leftStick.rotation.y -= 0.3;
+            leftStick.rotation.y -= 0.5;
         }
 
         var rays = [
@@ -233,64 +237,56 @@
             collisions = caster.intersectObjects(collidableMeshList);
             if (collisions.length > 0 && collisions[0].distance <= distance) {
                 console.log("collided " + collisions[0].object.name);
+                ballDirX = -ballDirX;
             }
         }
     }
 
 
 
-    function ballPhysics(){
-    if (football.position.x <= -900){   
-        if (football.position.y <=150 && football.position.y >= -150){
-     
-        opponentScore++;
-        scoreCard(myScore, opponentScore);
-        //console.log("I loose");
-        // document.getElementById("scores").innerHTML = score1 + "-" + score2;
-        // resetBall(2);
-        // matchScoreCheck();  
-        }
-        ballDirX = -ballDirX;
-    }
-    
-    else if (football.position.x >= 900){
-        if (football.position.y <= 150 && football.position.z >= -150)
-        {   
-      
-        myScore++;  
-        scoreCard(myScore, opponentScore);
-        // document.getElementById("scores").innerHTML = score1 + "-" + score2;
-        // resetBall(1);
-        // matchScoreCheck();  
-        }
-    ballDirX = -ballDirX;
-    }
-    else if (football.position.y <= -400)
-    {
-        ballDirY = -ballDirY;
-    }   
-    // if ball goes off the bottom side (side of table)
-    else if (football.position.y >= 400)
-    {
-        ballDirY = -ballDirY;
-    }
+    function ballPhysics() {
+        if (football.position.x <= -900) {
+            if (football.position.y <= 150 && football.position.y >= -150) {
 
-    // update ball position over time
-    football.position.x += ballDirX * ballSpeed;
-    football.position.y += ballDirY * ballSpeed;
-    
-    // limit ball's y-speed to 2x the x-speed
-    // this is so the ball doesn't speed from left to right super fast
-    // keeps game playable for humans
-    if (ballDirY > ballSpeed * 2)
-    {
-        ballDirY = ballSpeed * 2;
+                opponentScore++;
+                scoreCard(myScore, opponentScore);
+                //console.log("I loose");
+                // document.getElementById("scores").innerHTML = score1 + "-" + score2;
+                // resetBall(2);
+                // matchScoreCheck();  
+            }
+            ballDirX = -ballDirX;
+        } else if (football.position.x >= 900) {
+            if (football.position.y <= 150 && football.position.z >= -150) {
+
+                myScore++;
+                scoreCard(myScore, opponentScore);
+                // document.getElementById("scores").innerHTML = score1 + "-" + score2;
+                // resetBall(1);
+                // matchScoreCheck();  
+            }
+            ballDirX = -ballDirX;
+        } else if (football.position.y <= -400) {
+            ballDirY = -ballDirY;
+        }
+        // if ball goes off the bottom side (side of table)
+        else if (football.position.y >= 400) {
+            ballDirY = -ballDirY;
+        }
+
+        // update ball position over time
+        football.position.x += ballDirX * ballSpeed;
+        football.position.y += ballDirY * ballSpeed;
+
+        // limit ball's y-speed to 2x the x-speed
+        // this is so the ball doesn't speed from left to right super fast
+        // keeps game playable for humans
+        if (ballDirY > ballSpeed * 2) {
+            ballDirY = ballSpeed * 2;
+        } else if (ballDirY < -ballSpeed * 2) {
+            ballDirY = -ballSpeed * 2;
+        }
     }
-    else if (ballDirY < -ballSpeed * 2)
-    {
-        ballDirY = -ballSpeed * 2;
-    }
-}
 
 function opponentPaddleMovement()
 {
@@ -321,9 +317,6 @@ function opponentPaddleMovement()
 }
 
 
-
-
-
     function animate() {
         renderer.render(scene, camera);
         requestAnimationFrame( animate );
@@ -332,5 +325,16 @@ function opponentPaddleMovement()
         opponentPaddleMovement();
     }
 
+    function onWindowResize(){
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+    }
+
     animate();
+
+    window.addEventListener('resize', onWindowResize);
 })();
