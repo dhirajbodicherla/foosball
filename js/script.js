@@ -114,19 +114,19 @@
         
         */
 
-        var handGeometry = new THREE.CylinderGeometry( 12, 12, 600, 32 );
+        var handGeometry = new THREE.CylinderGeometry( 14, 14, 600, 32 );
         var handMaterial = new THREE.MeshBasicMaterial( {color: 0xff0f00} );
         var hands = new THREE.Mesh( handGeometry, handMaterial );
 
         hands.position.set(0, 0, 0);
 
-        var headGeometry = new THREE.SphereGeometry( 14, 32, 32 );
+        var headGeometry = new THREE.SphereGeometry( 16, 32, 32 );
         var headMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
         var head = new THREE.Mesh( headGeometry, headMaterial );
 
         head.position.set(0, 0, 10);
 
-        var torsoGeometry = new THREE.CubeGeometry( 10, 20, 50 );
+        var torsoGeometry = new THREE.CubeGeometry( 10, 30, 60 );
         var torsoMaterial = new THREE.MeshBasicMaterial( {color: 0x0000ff} );
         var torso = new THREE.Mesh( torsoGeometry, torsoMaterial );
 
@@ -138,6 +138,7 @@
         leftStick.add(torso);
 
         leftStick.position.set(-800, 0, 0);
+        leftStick.position.x = -800;
 
         scene.add(leftStick);
 
@@ -204,15 +205,15 @@
             leftStick.translateY( -10 );
         }
 
-        if(keyboard.pressed("left")){
+        if(keyboard.pressed("right")){
             leftStick.rotation.y += 0.3;
             //leftStick.rotateOnAxis(leftStickAxis, 0);
         }
-        if(keyboard.pressed("right")){
+        if(keyboard.pressed("left")){
             leftStick.rotation.y -= 0.3;
         }
 
-        /*
+        
 
         var originPoint = football.position.clone();
 
@@ -223,15 +224,16 @@
             var directionVector = globalVertex.sub( football.position );
 
             var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
-            var collisionResults = ray.intersectObjects( collidableMeshList );
+            var collisionResults = ray.intersectObjects( [leftStick.children[2], rightStick.children[2]] );
 
             if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()){
+                ballDirX = -ballDirX;
 
                
             }
                 
         }
-        */
+        
     }
 
     function ballPhysics(){
