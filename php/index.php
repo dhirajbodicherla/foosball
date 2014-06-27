@@ -23,21 +23,26 @@ if( $country_id == '-1' ){
 
 $dbh = Helpers::dbConnect();
 
-$sql_get_player_info = "SELECT * 
+$sql_get_player_info = "(SELECT * 
 						FROM player 
 						WHERE country_id_pla = :country_id_pla
 						ORDER BY RAND()
-						LIMIT 1";
+						LIMIT 1) UNION 
+						(SELECT * 
+						FROM player 
+						WHERE country_id_pla <> :country_id_pla
+						ORDER BY RAND()
+						LIMIT 1)";
 
 $sql_params = array();
 $sql_params['country_id_pla'] = $country_id;
 
 $stmt = Helpers::executeQuery($sql_get_player_info, $sql_params, 'bad request');
 
-$player_object = $stmt->fetch(PDO::FETCH_ASSOC);
+$players = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $response['status'] = 1;
-$response['data'] = $player_object;
+$response['data']['players'] = $players;
 
 echo json_encode($response);
 

@@ -6,10 +6,9 @@
         <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
     </head>
     <body>
-        <div class="score-card">
+        <div class="score-card hide">
             <div class="timer-card">
                 <div class="card-content">
-                    07:38
                 </div>
             </div>
             <div class="left-card">
@@ -36,7 +35,7 @@
             Loading ...
         </div>
 
-        <div class="country-select hide">
+        <div class="country-select">
             <div class="bg glass">
             </div>
             <div class="wrapper">
@@ -124,7 +123,23 @@
             </div>
         </div>
 
+        <div class="player-cards-container hide">
+            <div class="player-card">
+                sdfsfd
+                <div class="left-bend">
+                </div>
+                <div class="right-bend">
+                </div>
+            </div>
+            <div class="player-card">
+                sfsdfs
+            </div>
+        </div>
+        <div id="flag" class="hide">
+        </div>
+
         <script src="js/lib/jquery-1.9.1.js"></script>
+        <script src="js/lib/jquery.timer.js"></script>
         <script src="js/lib/three.min.js"></script>
         <!--
         <script src="js/lib/OBJLoader.js"></script>
@@ -137,7 +152,12 @@
         <script type="text/javascript">
             $(document).ready(function  () {
 
+                
+
                 (function App(){
+
+                    var gameStartSound = new Audio("sounds/game_start.mp3");
+                    var gameEndSound = new Audio("sounds/game_end.wav");
 
                     this.scoreCard = function  (left, right) {
 
@@ -145,6 +165,53 @@
 
                     };
 
+                    this.timer = function(duration){
+
+                        var $countdown;
+                        var incrementTime = 70;
+                        var currentTime = duration; // 5 minutes (in milliseconds)
+                        
+                        // Setup the timer
+                        $countdown = $('.timer-card .card-content');
+                        var jTimer = $.timer(function () {
+
+                            var timeString = formatTime(currentTime);
+                            $countdown.html(timeString);
+
+                            // If timer is complete, trigger alert
+                            if (currentTime == 0) {
+                                //alert('Example 2: Countdown timer complete!');
+                                //$.timer.stop();
+                                gameEndSound.play();
+                                jTimer.stop();
+                                return;
+                            }
+
+                            // Increment timer position
+                            currentTime -= incrementTime;
+                            if (currentTime < 0) currentTime = 0;
+
+                        }, incrementTime, true);
+
+                    };
+
+                    function pad(number, length) {
+                        var str = '' + number;
+                        while (str.length < length) {str = '0' + str;}
+                        return str;
+                    }
+
+                    function formatTime(time) {
+                        time = time / 10;
+                        var min = parseInt(time / 6000),
+                            sec = parseInt(time / 100) - (min * 60),
+                            hundredths = pad(time - (sec * 100) - (min * 6000), 2);
+                        return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
+                    }
+
+                    gameStart();
+
+                    /*
                     function init () {
                         $.ajax({
                             type : 'get',
@@ -159,6 +226,7 @@
                             }
                         });
                     }
+                    */
                     function showUserSelection(){
                         $('.country-select').removeClass('show')
                     }
@@ -182,16 +250,36 @@
                             dataType : 'json',
                             url : 'php/index.php',
                             data : { 'country_id' : country_id },
-                            success : function(data){
-                                error_container.html(data.message);
-                                if(data.status == 0){
+                            success : function(result){
+                                error_container.html(result.message);
+                                if(result.status == 0){
                                     return;    
                                 }else{
-                                    //var game = new Game(data.data);
+
+                                    //gameStart(result);
+                                    
                                 }
                             }
                         }); 
                     });
+
+                    function gameStart (result) {
+
+                        gameStartSound.play();
+
+                        $('.score-card').removeClass('hide');
+                        $('.country-select').addClass('hide');
+
+                        if(!result){
+                            init();
+                            return;
+                        }
+                        $('.left-card .card-content').html(result.data.players[0].country_abbr_pla);
+                        $('.right-card .card-content').html(result.data.players[1].country_abbr_pla);
+
+                        
+                        init();
+                    }
 
                     //init();
                 })();
