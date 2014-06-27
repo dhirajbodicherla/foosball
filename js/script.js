@@ -15,7 +15,7 @@ var canvasWidth = window.innerWidth
 , ground
 , collidableMeshList = []
 , rightStickDirY = 0
-, paddleSpeed = 5
+, paddleSpeed = 0
 , ballDirX = 1
 , ballDirY = 1
 , ballSpeed = 3
@@ -25,7 +25,17 @@ var canvasWidth = window.innerWidth
 , isGameOver = false
 , isGoalScored = false;
 
-//init();
+level(level);
+
+function level(level)
+{
+    if level == 0{
+        paddleSpeed = 5;
+    }
+    else{
+        paddleSpeed = 10;
+    }
+}
 
 function init(){
 
@@ -374,7 +384,7 @@ function opponentPaddleMovement(){
 
     //leftStick.children[2]
     // Lerp towards the ball on the y plane
-    rightStickDirY = (football.position.y - rightStick.position.y) * difficulty;
+    rightStickDirY = (football.position.y - rightStick.position.y)
     
     // in case the Lerp function produces a value above max paddle speed, we clamp it
     if (Math.abs(rightStickDirY) <= paddleSpeed)
