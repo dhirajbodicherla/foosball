@@ -22,7 +22,7 @@ var canvasWidth = window.innerWidth
 , difficulty = 0.2
 , myScore = 0
 , opponentScore = 0
-, isGameOver = false
+, isGameOver = true
 , isGoalScored = false;
 
 //init();
@@ -178,7 +178,14 @@ function loadModels(){
     collidableMeshList.push(wall3);
     collidableMeshList.push(wall4);
 
-    timer(300000);
+
+    setTimeout(function  () {
+        isGameOver = false;
+        timer(300000);
+    }, 4000);
+    
+
+
     animate();
     
 }
@@ -279,7 +286,7 @@ function update() {
                 scoreCard(myScore, opponentScore);
             }
 
-            console.log("collided " + collisions[0].object.name);
+            //console.log("collided " + collisions[0].object.name);
             ballDirX = -ballDirX;
             ballSpeed =8;
         }
@@ -289,8 +296,10 @@ function update() {
 function resetBall(winner)
 {
 
-    setTimeout(function  () {
+    var tempTimer = setTimeout(function () {
+        console.log('will call goalScored fn');
         goalScored(winner);
+        clearTimeout(tempTimer);
     }, 2000);
     
 }
@@ -318,19 +327,16 @@ function goalScored(winner) {
 }
 
 
-    
-
-
-
 function ballPhysics() {
 
 
     if (football.position.x <= -600) {
         if (football.position.z <= 75 && football.position.z >= -75){
 
-            opponentScore++;
-            resetBall("opponent");
-            scoreCard(myScore, opponentScore);
+            //opponentScore++;
+            //resetBall("opponent");
+            //console.log('will update opponent score ' + opponentScore);
+            //scoreCard(myScore, opponentScore);
             //console.log("I loose");
             // document.getElementById("scores").innerHTML = score1 + "-" + score2;
             // resetBall(2);
@@ -340,9 +346,9 @@ function ballPhysics() {
     } else if (football.position.x >= 600) {
         if (football.position.z <= 75 && football.position.z >= -75) {
 
-            myScore++;
-            resetBall("player");
-            scoreCard(myScore, opponentScore);
+            //myScore++;
+            //resetBall("player");
+            //scoreCard(myScore, opponentScore);
             // document.getElementById("scores").innerHTML = score1 + "-" + score2;
             // resetBall(1);
             // matchScoreCheck();  
@@ -412,7 +418,7 @@ function animate() {
               update();
 
         }
-            
+         
             opponentPaddleMovement();
     
     }else{

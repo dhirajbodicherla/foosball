@@ -35,13 +35,19 @@
             Loading ...
         </div>
 
-        <div class="country-select">
+        <div class="country-select flip">
             <div class="bg glass">
             </div>
             <div class="wrapper">
             </div>
             <div class="content">
-                <label>Game on !!</label> <br />
+                <div>
+                    <input type="image" src="css/images/yellow_card.png" class="yellow_card"/>
+                </div>
+                <div>
+                    <input type="image" src="css/images/red_card.png" class="red_card"/>
+                </div>
+                <!--<label>Game on !!</label> <br />-->
                 <select name="country_id">
                     <option value="-1">Select a country</option>
                     <option value="67">United States</option>
@@ -199,6 +205,9 @@
 
                 (function App(){
 
+
+                    $('.country-select').removeClass('flip');
+
                     var gameStartSound = new Audio("sounds/game_start.mp3");
                     var gameEndSound = new Audio("sounds/game_end.wav");
 
@@ -272,7 +281,7 @@
                     }
                     */
                     function showUserSelection(){
-                        $('.country-select').removeClass('show')
+                        $('.country-select').removeClass('show');
                     }
                     function getPlayerDetails(country) {
                         $.ajax({
