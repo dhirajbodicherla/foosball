@@ -1,7 +1,7 @@
 body 
 {
 	margin: 0px;
-	overflow: hidden;
+	/* overflow: hidden; */
 	font-family: 'Ubuntu', sans-serif;
 }
 canvas{
@@ -252,46 +252,150 @@ canvas{
 }
 
 .player-cards-container{
-    border: 1px solid red;
-    width: 650px;
+
+    width: 750px;
     height: 400px;
     position: relative;
     left: 50%;
-    margin-left: -320px;
+    margin-left: -376px;
     top: 10rem;
+    background: rgb(26,57,71);
+    border-radius: 4px;
     
     -webkit-box-shadow: 1px 1px 10px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 1px 1px 10px 0px rgba(0,0,0,0.75);
     box-shadow: 1px 1px 10px 0px rgba(0,0,0,0.75);
+
+    -webkit-transition: -webkit-transform 1s;
+    -moz-transition: -moz-transform 1s;
+    -o-transition: -o-transform 1s;
+    transition: transform 1s;
+
+    -webkit-backface-visibility: hidden; /* Chrome, Safari, Opera */
+    backface-visibility: hidden;
     
 }
+.action-card{
+    position: relative;
+    background: rgb(26,57,71);
+    width: 100px;
+    height: 92%;
+    margin: 10px 0px;
+    text-align: center;
+    float: left;
+}
+.action-card > .card-content:before {
+    content: 'Play';
+    position: absolute;
+    top: -25px;
+    left: 20%;
+    font-size: 30px;
+    color: white;
+}
+.action-card > .card-content {
+    position: relative;
+    top: 50%;
+}
 .player-card{
+    background: rgb(227,195,97);
     position: relative;
     width: 300px;
-    margin: 11px;
+    margin: 10px 10px;
     height: 92%;
     float: left;
-    border: 1px solid green;
 }
-.player-card > .left-bend{
+.player-card > .left-top-bend{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-top: 50px solid rgb(26,57,71);
+    border-left: 0px solid transparent;
+    border-right: 50px solid transparent;
+}
+.player-card > .right-top-bend{
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-top: 50px solid rgb(26,57,71);
+    border-left: 50px solid transparent;
+    border-right: 0px solid transparent;
+}
+.player-card > .left-bottom-bend{
     position: absolute;
     left: 0;
     bottom: 0;
     width: 0;
     height: 0;
-    border-bottom: 50px solid #eee;
+    border-bottom: 50px solid rgb(26,57,71);
     border-left: 0px solid transparent;
-    border-right: 150px solid transparent;
+    border-right: 146px solid transparent;
 }
-.player-card > .right-bend{
+.player-card > .right-bottom-bend{
     position: absolute;
     right: 0;
     bottom: 0;
     width: 0;
     height: 0;
-    border-bottom: 50px solid #eee;
-    border-left: 150px solid transparent;
+    border-bottom: 50px solid rgb(26,57,71);
+    border-left: 146px solid transparent;
     border-right: 0px solid transparent;
+}
+.player-card > .card-content > .player-name {
+    text-align: center;
+    font-size: 32px;
+    margin: 35px 0px;
+}
+.player-card > .card-content > .player-stats{
+    margin: 40px 0px 10px 15px;
+    text-align: left;
+    font-size: 38px;
+
+    background-image: -ms-linear-gradient(left, #DDB848 0%, #E3C361 100%);
+    background-image: -moz-linear-gradient(left, #DDB848 0%, #E3C361 100%);
+    background-image: -o-linear-gradient(left, #DDB848 0%, #E3C361 100%);
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #DDB848), color-stop(1, #E3C361));
+    background-image: -webkit-linear-gradient(left, #DDB848 0%, #E3C361 100%);
+    background-image: linear-gradient(to right, #DDB848 0%, #E3C361 100%);
+
+}
+
+.player-card > .card-content > .player-basic-info{
+    color: white;
+    margin: 40px 0px 10px 0px;
+    text-align: right;
+    font-size: 20px;
+    
+    background-image: -ms-radial-gradient(center, circle farthest-corner, #DDB848 0%, #D9BC60 50%, #E3C361 100%);
+    background-image: -moz-radial-gradient(center, circle farthest-corner, #DDB848 0%, #D9BC60 50%, #E3C361 100%);
+    background-image: -o-radial-gradient(center, circle farthest-corner, #DDB848 0%, #D9BC60 50%, #E3C361 100%);
+    background-image: -webkit-gradient(radial, center center, 0, center center, 497, color-stop(0, #DDB848), color-stop(0.5, #D9BC60), color-stop(1, #E3C361));
+    background-image: -webkit-radial-gradient(center, circle farthest-corner, #DDB848 0%, #D9BC60 50%, #E3C361 100%);
+    background-image: radial-gradient(circle farthest-corner at center, #DDB848 0%, #D9BC60 50%, #E3C361 100%);
+
+}
+.player-card > .card-content > .player-basic-info table {
+    position: relative;
+    left: 10%;
+}
+
+.player-card > .card-content > .player-stats > .potential {
+    font-weight: bold;
+}
+
+.player-card > .card-content > .player-stats > .separator {
+    font-weight: bold;
+}
+
+.player-card > .card-content > .player-stats > .position {
+    font-size: 34px;
+}
+.play-game-button{
+    width: 75%;
+    height: 75%;
 }
 
 #flag {
