@@ -19,25 +19,20 @@ var canvasWidth = window.innerWidth
 , ballDirX = 1
 , ballDirY = 1
 , ballSpeed = 3
-, difficulty = 0.2
 , myScore = 0
 , opponentScore = 0
 , isGameOver = true
 , isGoalScored = false;
 
-level(level);
+function init(){
 
-function level(level)
-{
-    if level == 0{
+    if (difficulty == 1){
         paddleSpeed = 5;
     }
-    else{
+    if(difficulty ==2 ){
         paddleSpeed = 10;
     }
-}
-
-function init(){
+    console.log(paddleSpeed + "level");
 
     // test camera
     
@@ -307,7 +302,6 @@ function resetBall(winner)
 {
 
     var tempTimer = setTimeout(function () {
-        console.log('will call goalScored fn');
         goalScored(winner);
         clearTimeout(tempTimer);
     }, 2000);

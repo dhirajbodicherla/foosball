@@ -34,6 +34,10 @@
         <div class="loader hide">
             Loading ...
         </div>
+        <div class="fifa">
+                
+                <input type="image" src="css/images/fifa1.jpg" class="fifa" id="fifa"/>
+        </div>
 
         <div class="country-select flip">
             <div class="bg glass">
@@ -49,6 +53,7 @@
                     <label>Hard</label>
                     <input type="image" src="css/images/red_card.png" class="red_card" id="red_card"/>
                 </div>
+
                 <!--<label>Game on !!</label> <br />-->
                 <select name="country_id">
                     <option value="-1">Select a country</option>
@@ -204,10 +209,11 @@
             $(document).ready(function  () {
 
                 
+                difficulty = 1;
 
                 (function App(){
 
-                    var difficulty = 1;
+                    
 
                     $('.country-select').removeClass('flip');
 
@@ -336,6 +342,7 @@
 
                         $('.country-select').addClass('hide');
 
+
                         if(result == null){
                             init();
                             return;
@@ -378,6 +385,7 @@
 
                         $('.score-card').removeClass('hide');
                         $('.player-cards-container').addClass('hide');
+                         $('.fifa').addClass('hide');
                         gameStartSound.play();
 
                         init();
