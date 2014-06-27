@@ -186,7 +186,7 @@ function loadModels(){
 
     setTimeout(function  () {
         isGameOver = false;
-        timer(300000);
+        timer(300);
     }, 4000);
     
 
@@ -441,4 +441,4 @@ function onWindowResize(){
 
 
 
-window.addEventListener('resize', onWindowResize);
+// window.addEventListener('resize', onWindowResize);

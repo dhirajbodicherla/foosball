@@ -38,6 +38,10 @@
                 
                 <input type="image" src="css/images/fifa1.jpg" class="fifa" id="fifa"/>
         </div>
+        <div class = "game-over">
+            Game Over </br>
+            <a href="" onclick="window.location.reload()">Click to Start Again</a>
+        </div>
 
         <div class="country-select flip">
             <div class="bg glass">
@@ -216,6 +220,7 @@
                     
 
                     $('.country-select').removeClass('flip');
+                    $('.game-over').addClass('hide');
 
                     var gameStartSound = new Audio("sounds/game_start.mp3");
                     var gameEndSound = new Audio("sounds/game_end.wav");
@@ -246,6 +251,7 @@
                                 isGameOver = true;
                                 gameEndSound.play();
                                 jTimer.stop();
+                                $('.game-over').removeClass('hide');
                                 return;
                             }
 

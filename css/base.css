@@ -186,6 +186,21 @@ canvas{
     backface-visibility: hidden;
 
 }
+.game-over {
+    width: 500px;
+    height: 200px;
+    position: relative;
+    left: 50%;
+    margin-left: -250px;
+    top: 10rem;
+    font-size: 24px;
+    color: #ffffff;
+    position: absolute;
+    text-align: center;
+    padding-top:50px;
+
+}
+
 .yellow_card_container{
     margin-left: 65px;
     position: relative;
