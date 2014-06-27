@@ -19,7 +19,7 @@
 
             <div class="middle-card">
                 <div class="card-content">
-                    0 - 1
+                    0 - 0
                 </div>
             </div>
 
@@ -123,16 +123,59 @@
             </div>
         </div>
 
-        <div class="player-cards-container hide">
-            <div class="player-card">
-                sdfsfd
-                <div class="left-bend">
+        <div class="player-cards-container hide flip">
+            <div class="player-card" id="player1">
+                <div class="card-content">
+                    <div class="player-name">
+                        <span>Carrizo</span>
+                    </div>
+                    <div class="player-stats">
+                        <span class="potential">78</span>
+                        <span class="line-separator">|</span>
+                        <span class="position">RW</span>
+                    </div>
+                    <div class="player-basic-info">
+                        <table></table>
+                    </div>
                 </div>
-                <div class="right-bend">
+                
+                <div class="left-top-bend">
+                </div>
+                <div class="right-top-bend">
+                </div>
+                <div class="left-bottom-bend">
+                </div>
+                <div class="right-bottom-bend">
                 </div>
             </div>
-            <div class="player-card">
-                sfsdfs
+            <div class="action-card">
+                <div class="card-content">
+                    <input type="image" id="play-game" class="play-game-button" src="css/images/whistle.png" />
+                </div>
+            </div>
+            <div class="player-card" id="player2">
+                <div class="card-content">
+                    <div class="player-name">
+                        <span>Carrizo</span>
+                    </div>
+                    <div class="player-stats">
+                        <span class="potential">78</span>
+                        <span class="line-separator">|</span>
+                        <span class="position">RW</span>
+                    </div>
+                    <div class="player-basic-info">
+                        <table></table>
+                    </div>
+                </div>
+                
+                <div class="left-top-bend">
+                </div>
+                <div class="right-top-bend">
+                </div>
+                <div class="left-bottom-bend">
+                </div>
+                <div class="right-bottom-bend">
+                </div>
             </div>
         </div>
         <div id="flag" class="hide">
@@ -259,9 +302,7 @@
                                     $this.removeAttr('disabled');
                                     return;    
                                 }else{
-
                                     gameStart(result);
-                                    
                                 }
                             }
                         }); 
@@ -269,9 +310,6 @@
 
                     function gameStart (result) {
 
-                        gameStartSound.play();
-
-                        $('.score-card').removeClass('hide');
                         $('.country-select').addClass('hide');
 
                         if(result == null){
@@ -282,9 +320,45 @@
                         $('.left-card .card-content').html(result.data.players[0].country_abbr_pla);
                         $('.right-card .card-content').html(result.data.players[1].country_abbr_pla);
 
-                        
-                        init();
+                        var p1Data = result.data.players[0];
+                        var p2Data = result.data.players[1];
+
+                        var p1 = $('#player1');
+                        var p2 = $('#player2');
+
+                        p1.find('.player-name span').text((p1Data.first_name_pla == null ? '' : p1Data.first_name_pla) + " " + (p1Data.last_name_pla == null ? '' : p1Data.last_name_pla));
+                        p1.find('.player-stats .potential').text(p1Data.potential_pla);
+                        p1.find('.player-stats .position').text(p1Data.position_pla);
+
+                        p1.find('.player-basic-info table').append('<tr><td>Age</td><td>'+p1Data.age_pla+'</td></tr>');
+                        p1.find('.player-basic-info table').append('<tr><td>Club</td><td>'+p1Data.club_pla+'</td></tr>');
+                        p1.find('.player-basic-info table').append('<tr><td>Country</td><td>'+p1Data.nationality_pla+'</td></tr>');
+
+                        p2.find('.player-name span').text((p2Data.first_name_pla == null ? '' : p2Data.first_name_pla) + " " + (p2Data.last_name_pla == null ? '' : p2Data.last_name_pla));
+                        p2.find('.player-stats .potential').text(p2Data.potential_pla);
+                        p2.find('.player-stats .position').text(p2Data.position_pla);
+
+                        p2.find('.player-basic-info table').append('<tr><td>Age</td><td>'+p2Data.age_pla+'</td></tr>');
+                        p2.find('.player-basic-info table').append('<tr><td>Club</td><td>'+p2Data.club_pla+'</td></tr>');
+                        p2.find('.player-basic-info table').append('<tr><td>Country</td><td>'+p2Data.nationality_pla+'</td></tr>');
+
+                        $('.player-cards-container').removeClass('hide');
+
+                        setTimeout(function  () {
+                          $('.player-cards-container').removeClass('flip');  
+                        },100);
+
                     }
+
+                    $('#play-game').click(function  (e) {
+
+                        $('.score-card').removeClass('hide');
+                        $('.player-cards-container').addClass('hide');
+                        gameStartSound.play();
+
+                        init();
+                        
+                    });
 
                     //init();
                 })();
