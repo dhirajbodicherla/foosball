@@ -8,8 +8,8 @@ html {
 body 
 {
 	margin: 0px;
-	/* overflow: hidden; */
 	font-family: 'Ubuntu', sans-serif;
+    overflow: hidden;
 }
 canvas{
 	z-index: 1000;
@@ -217,6 +217,7 @@ canvas{
     left: 20%;
     cursor: pointer;
     cursor: hand;
+    color: #ffffff;
 }
 .red_card_container {
     position: relative;
@@ -414,6 +415,7 @@ canvas{
     text-align: center;
     font-size: 32px;
     margin: 35px 0px;
+    text-shadow: -0.5px -1.5px 0.5px #000000;
 }
 .player-card > .card-content > .player-stats{
     margin: 40px 0px 10px 15px;
@@ -443,9 +445,10 @@ canvas{
     background-image: radial-gradient(circle farthest-corner at center, #DDB848 0%, #D9BC60 50%, #E3C361 100%);
 
 }
-.player-card > .card-content > .player-basic-info table {
+.player-card > .card-content > .player-basic-info > table {
     position: relative;
-    left: 10%;
+    left: 15px;
+    width: 90%;
 }
 
 .player-card > .card-content > .player-stats > .potential {
@@ -457,7 +460,17 @@ canvas{
 }
 
 .player-card > .card-content > .player-stats > .position {
-    font-size: 34px;
+    font-size: 30px;
+}
+
+.player-card > .card-content > .player-extra-info {
+    text-align: center;
+}
+.player-card > .card-content > .player-extra-info > .info1{
+    text-shadow: 0.5px 1px 1px #E6C14F;
+    color: #8A742F;
+    font-weight: bold;
+    font-size: 35px;
 }
 .play-game-button{
     width: 75%;
