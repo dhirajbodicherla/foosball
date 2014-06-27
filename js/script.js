@@ -15,7 +15,7 @@ var canvasWidth = window.innerWidth
 , ground
 , collidableMeshList = []
 , rightStickDirY = 0
-, paddleSpeed = 20
+, paddleSpeed = 30
 , ballDirX = 1
 , ballDirY = 1
 , ballSpeed = 3
@@ -130,16 +130,18 @@ function loadModels(){
     goal1.position.set(-600, 0, 0);
     goal1.rotation.x = Math.PI / 2;
     goal1.name = "goal1";
+    goal1.type = 0;
     scene.add(goal1);
-    //collidableMeshList.push(goal1);
+    collidableMeshList.push(goal1);
 
     goal2 = goal1.clone();
     goal2.overdraw = true;
     goal2.position.set(600, 0, 0);
     goal2.rotation.x = Math.PI / 2;
     goal2.name = "goal2";
+    goal2.type = 2;
     scene.add(goal2);
-    //collidableMeshList.push(goal2);
+    collidableMeshList.push(goal2);
 
     //adding invisible walls around
 
@@ -163,6 +165,11 @@ function loadModels(){
     scene.add(wall2);
     scene.add(wall3);
     scene.add(wall4);
+
+    wall.type = 1;
+    wall2.type = 1;
+    wall3.type = 1;
+    wall4.type = 1;
 
     collidableMeshList.push(wall);
     collidableMeshList.push(wall2);
@@ -236,7 +243,7 @@ function update() {
         leftStick.rotation.y -= 0.5;
     }
 
-    ballSpeed += (5 - ballSpeed) * 0.005;
+    ballSpeed += (3 - ballSpeed) * 0.005;
 
     var rays = [
         new THREE.Vector3(0, 0, 1),
@@ -257,20 +264,57 @@ function update() {
         caster.set(football.position, rays[i]);
         collisions = caster.intersectObjects(collidableMeshList);
         if (collisions.length > 0 && collisions[0].distance <= distance) {
+            if( collisions[0].object.type == 0 ){
+            opponentScore++;
+            resetBall("opponent");
+            scoreCard(myScore, opponentScore);
+            }
+            else if (collisions[0].object.type == 2 ){
+
+            myScore++;
+            resetBall("player");
+            scoreCard(myScore, opponentScore);
+            }
             console.log("collided " + collisions[0].object.name);
             ballDirX = -ballDirX;
-            ballSpeed = 20;
+            ballSpeed = 15;
         }
     }
 }
 
+function resetBall(winner)
+{
+   
+    ballSpeed = 1;
+    
+    // if player lost the last point, we send the ball to opponent
+    if (winner == "player")
+    {
+        football.position.x = -300;
+        football.position.y = 0;
+        ballDirX = -1;
+    }
+    // else if opponent lost, we send ball to player
+    else
+    {
+        football.position.x = 300;
+        football.position.y = 0;
+        ballDirX = -1;
+    }
+    
+    // set the ball to move +ve in y plane (towards left from the camera)
+    ballDirY = 1;
+}
 
 
 function ballPhysics() {
-    if (football.position.x <= -900) {
-        if (football.position.y <= 150 && football.position.y >= -150) {
+
+
+    if (football.position.x <= -600) {
+        if (football.position.z <= 75 && football.position.z >= -75){
 
             opponentScore++;
+            resetBall("opponent");
             scoreCard(myScore, opponentScore);
             //console.log("I loose");
             // document.getElementById("scores").innerHTML = score1 + "-" + score2;
@@ -278,10 +322,11 @@ function ballPhysics() {
             // matchScoreCheck();  
         }
         ballDirX = -ballDirX;
-    } else if (football.position.x >= 900) {
-        if (football.position.y <= 150 && football.position.z >= -150) {
+    } else if (football.position.x >= 600) {
+        if (football.position.z <= 75 && football.position.z >= -75) {
 
             myScore++;
+            resetBall("player");
             scoreCard(myScore, opponentScore);
             // document.getElementById("scores").innerHTML = score1 + "-" + score2;
             // resetBall(1);
