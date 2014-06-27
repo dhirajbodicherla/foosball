@@ -20,7 +20,9 @@ var canvasWidth = window.innerWidth
 , ballDirY = 1
 , ballSpeed = 3
 , myScore = 0
-, opponentScore = 0;
+, opponentScore = 0
+, isGameOver = false
+, isGoalScored = false;
 
 //init();
 
@@ -195,7 +197,7 @@ function createPlayer(name, position, color){
     var head = new THREE.Mesh( headGeometry, headMaterial );
     head.position.set(0, 0, 26);
 
-    var torsoGeometry = new THREE.CubeGeometry( 15, 45, 60 );
+    var torsoGeometry = new THREE.CubeGeometry( 15, 50, 65 );
     var torsoMaterial = new THREE.MeshBasicMaterial( {color: color} );
     var torso = new THREE.Mesh( torsoGeometry, torsoMaterial );
     torso.position.set(0, 0, -20);
@@ -265,17 +267,19 @@ function update() {
         collisions = caster.intersectObjects(collidableMeshList);
         if (collisions.length > 0 && collisions[0].distance <= distance) {
             if( collisions[0].object.type == 0 ){
-            opponentScore++;
-            resetBall("opponent");
-            scoreCard(myScore, opponentScore);
+                opponentScore++;
+                isGoalScored = true;
+                resetBall("opponent");
+                scoreCard(myScore, opponentScore);
             }
             else if (collisions[0].object.type == 2 ){
-
-            myScore++;
-            resetBall("player");
-            scoreCard(myScore, opponentScore);
+                myScore++;
+                resetBall("player");
+                isGoalScored = true;
+                scoreCard(myScore, opponentScore);
             }
-            console.log("collided " + collisions[0].object.name);
+
+            //fciconsole.log("collided " + collisions[0].object.name);
             ballDirX = -ballDirX;
             ballSpeed = 15;
         }
@@ -284,8 +288,14 @@ function update() {
 
 function resetBall(winner)
 {
-   
-    ballSpeed = 1;
+
+    setTimeout(function  () {
+        goalScored(winner);
+    }, 2000);
+    
+}
+function goalScored(winner) {
+    ballSpeed = 1.5;
     
     // if player lost the last point, we send the ball to opponent
     if (winner == "player")
@@ -304,7 +314,12 @@ function resetBall(winner)
     
     // set the ball to move +ve in y plane (towards left from the camera)
     ballDirY = 1;
+    isGoalScored = false;
 }
+
+
+    
+
 
 
 function ballPhysics() {
@@ -382,13 +397,27 @@ function opponentPaddleMovement(){
     }
 }
 
+function resetPositions () {
+    football.position.set(0, 0, 0);
+    rightStick.position.set(400, 0, 80);
+    leftStick.position.set(-400, 0, 80);
+}
 
 function animate() {
     renderer.render(scene, camera);
     requestAnimationFrame( animate );
-    ballPhysics();        
-    update();
-    opponentPaddleMovement();
+    if (!isGameOver){
+        if(!isGoalScored){
+              ballPhysics();
+              update();
+
+        }
+            
+            opponentPaddleMovement();
+    
+    }else{
+        resetPositions();
+    }
 }
 
 function onWindowResize(){

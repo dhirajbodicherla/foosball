@@ -182,6 +182,7 @@
                             if (currentTime == 0) {
                                 //alert('Example 2: Countdown timer complete!');
                                 //$.timer.stop();
+                                isGameOver = true;
                                 gameEndSound.play();
                                 jTimer.stop();
                                 return;
@@ -209,7 +210,7 @@
                         return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
                     }
 
-                    //gameStart();
+                    //gameStart(null);
 
                     /*
                     function init () {
@@ -242,8 +243,10 @@
                     }
 
                     $('#country-submit').click(function (e) {
+                        var $this = $(this);
                         var error_container = $('.error');
                         var country_id = $('select[name="country_id"] option:selected').val();
+                        $this.attr('disabled', 'disabled');
 
                         $.ajax({
                             type : 'post',
@@ -253,6 +256,7 @@
                             success : function(result){
                                 error_container.html(result.message);
                                 if(result.status == 0){
+                                    $this.removeAttr('disabled');
                                     return;    
                                 }else{
 
@@ -270,10 +274,11 @@
                         $('.score-card').removeClass('hide');
                         $('.country-select').addClass('hide');
 
-                        if(!result){
+                        if(result == null){
                             init();
                             return;
                         }
+                        
                         $('.left-card .card-content').html(result.data.players[0].country_abbr_pla);
                         $('.right-card .card-content').html(result.data.players[1].country_abbr_pla);
 
