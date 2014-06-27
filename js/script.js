@@ -15,10 +15,11 @@ var canvasWidth = window.innerWidth
 , ground
 , collidableMeshList = []
 , rightStickDirY = 0
-, paddleSpeed = 30
+, paddleSpeed = 5
 , ballDirX = 1
 , ballDirY = 1
 , ballSpeed = 3
+, difficulty = 0.2
 , myScore = 0
 , opponentScore = 0
 , isGameOver = false
@@ -29,18 +30,17 @@ var canvasWidth = window.innerWidth
 function init(){
 
     // test camera
-    /*
-    camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 1, 2000)
-    camera.position.set(-750, 350, 10);
-    camera.rotation.x = Math.PI / 2;
-    camera.rotation.y = -Math.PI/2;
-    */
     
-    //main camera
+    // camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 1, 2000)
+    // camera.position.set(-750, 350, 10);
+    // camera.rotation.x = Math.PI / 2;
+    // camera.rotation.y = -Math.PI/2;
+    
+
     
     camera = new THREE.OrthographicCamera( -aspectRatio * viewSize / 2, aspectRatio * viewSize / 2, viewSize / 2, -viewSize / 2, -2000, 2000 );
     camera.position.set(0, 0, 250);
-    //camera.rotation.x = Math.PI / 2;
+    camera.rotation.x = Math.PI / 2;
     camera.lookAt(new THREE.Vector3(0, 50, 0));
     
 
@@ -124,7 +124,7 @@ function loadModels(){
     });
     football = new THREE.Mesh(new THREE.SphereGeometry(30, 100, 100), footballMaterial);
     football.overdraw = true;
-    football.position.set(0, 0, 0);
+    football.position.set(0, 0, 30);
     scene.add(football);
 
     goal1 =new THREE.Mesh(new THREE.CubeGeometry(30, 10, 150), new THREE.MeshNormalMaterial());
@@ -178,7 +178,7 @@ function loadModels(){
     collidableMeshList.push(wall3);
     collidableMeshList.push(wall4);
 
-    timer(30000);
+    timer(300000);
     animate();
     
 }
@@ -197,10 +197,10 @@ function createPlayer(name, position, color){
     var head = new THREE.Mesh( headGeometry, headMaterial );
     head.position.set(0, 0, 26);
 
-    var torsoGeometry = new THREE.CubeGeometry( 15, 50, 65 );
+    var torsoGeometry = new THREE.CubeGeometry( 15, 70, 80 );
     var torsoMaterial = new THREE.MeshBasicMaterial( {color: color} );
     var torso = new THREE.Mesh( torsoGeometry, torsoMaterial );
-    torso.position.set(0, 0, -20);
+    torso.position.set(0, 0, -50);
 
     var player = new THREE.Object3D();
     player.add(hands);
@@ -279,9 +279,9 @@ function update() {
                 scoreCard(myScore, opponentScore);
             }
 
-            //fciconsole.log("collided " + collisions[0].object.name);
+            console.log("collided " + collisions[0].object.name);
             ballDirX = -ballDirX;
-            ballSpeed = 15;
+            ballSpeed =8;
         }
     }
 }
@@ -374,7 +374,7 @@ function opponentPaddleMovement(){
 
     //leftStick.children[2]
     // Lerp towards the ball on the y plane
-    rightStickDirY = (football.position.y - rightStick.position.y);
+    rightStickDirY = (football.position.y - rightStick.position.y) * difficulty;
     
     // in case the Lerp function produces a value above max paddle speed, we clamp it
     if (Math.abs(rightStickDirY) <= paddleSpeed)
