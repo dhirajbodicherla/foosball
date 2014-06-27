@@ -41,11 +41,13 @@
             <div class="wrapper">
             </div>
             <div class="content">
-                <div>
-                    <input type="image" src="css/images/yellow_card.png" class="yellow_card"/>
+                <div class="yellow_card_container active">
+                    <label>Easy</label>
+                    <input type="image" src="css/images/yellow_card.png" class="yellow_card" id="yellow_card" />
                 </div>
-                <div>
-                    <input type="image" src="css/images/red_card.png" class="red_card"/>
+                <div class="red_card_container">
+                    <label>Hard</label>
+                    <input type="image" src="css/images/red_card.png" class="red_card" id="red_card"/>
                 </div>
                 <!--<label>Game on !!</label> <br />-->
                 <select name="country_id">
@@ -205,6 +207,7 @@
 
                 (function App(){
 
+                    var difficulty = 1;
 
                     $('.country-select').removeClass('flip');
 
@@ -315,6 +318,18 @@
                                 }
                             }
                         }); 
+                    });
+
+                    $('.red_card_container').click(function  () {
+                        difficulty = 2;
+                        $(this).addClass('active');
+                        $('.yellow_card_container').removeClass('active');
+                    });
+
+                    $('.yellow_card_container').click(function  () {
+                        difficulty = 1; 
+                        $(this).addClass('active');
+                        $('.red_card_container').removeClass('active');
                     });
 
                     function gameStart (result) {

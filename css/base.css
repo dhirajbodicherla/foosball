@@ -1,3 +1,10 @@
+html { 
+    background: url('images/background.png') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
 body 
 {
 	margin: 0px;
@@ -178,6 +185,28 @@ canvas{
     backface-visibility: hidden;
 
 }
+.yellow_card_container{
+    margin-left: 65px;
+    position: relative;
+    float: left;
+    opacity: 0.4;
+}
+.yellow_card_container:hover, .red_card_container:hover, .yellow_card_container.active, .red_card_container.active{
+    opacity: 1;
+}
+.yellow_card_container > label, .red_card_container > label  {
+    position: absolute;
+    font-size: 20px;
+    top: 30%;
+    left: 20%;
+    cursor: pointer;
+    cursor: hand;
+}
+.red_card_container {
+    position: relative;
+    float: left;
+    opacity: 0.3;
+}
 .yellow_card{
     width: 70px;
     height: 84px;
@@ -216,7 +245,7 @@ canvas{
 .country-select > .content{
     font : 300 30px/1.2 'Gotham SSm A', 'Gotham SSm B', sans-serif;
     position: absolute;
-    top: 30%;
+    top: 10%;
     bottom: 10px;
     left: 10px;
     right: 10px;
